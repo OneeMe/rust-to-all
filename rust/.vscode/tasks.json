@@ -1,0 +1,29 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"command": "scripts/ios_build.sh",
+			"group": "build",
+			"label": "rust: build ios"
+		},
+		{
+			"type": "shell",
+			"command": "scripts/web_build.sh",
+			"group": "build",
+			"label": "rust: build web"
+		},
+		{
+			"type": "shell",
+			"command": "scripts/android_build.sh",
+			"group": "build",
+			"label": "rust: build android"
+		},
+		{
+			"type": "shell",
+			"command": "scripts/build.sh",
+			"group": "build",
+			"label": "rust: build all"
+		},
+	]
+}
