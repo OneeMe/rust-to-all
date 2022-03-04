@@ -1,11 +1,11 @@
 #![cfg(target_os = "android")]
 #![allow(non_snake_case)]
 
-use crate::hello;
 use jni::objects::{JClass, JString};
 use jni::sys::jstring;
 use jni::JNIEnv;
-use std::ffi::CString;
+use std::ffi::{CStr, CString};
+use std::os::raw::c_char;
 
 // NOTE: RustKt references the name rusty.kt, which will be the kotlin file exposing the functions below.
 // Remember the JNI naming conventions.
@@ -24,6 +24,19 @@ pub extern "system" fn Java_com_onee_rustlib_Rusty_helloDirect(
         .new_string(format!("Hello from Rust: {}", input))
         .expect("Couldn't create a Java string!");
     output.into_inner()
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn hello(to: *const c_char) -> *mut c_char {
+    let c_str = CStr::from_ptr(to);
+    let recipient = match c_str.to_str() {
+        Ok(s) => s,
+        Err(_) => "you",
+    };
+
+    CString::new(format!("Hello from Rust: {}", recipient))
+        .unwrap()
+        .into_raw()
 }
 
 #[allow(clippy::similar_names)]

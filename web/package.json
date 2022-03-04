@@ -1,0 +1,22 @@
+{
+  "name": "web",
+  "version": "0.0.1",
+  "description": "A web wrapper for rust",
+  "main": "index.js",
+  "author": "onee",
+  "license": "ISC",
+  "scripts": {
+    "serve": "webpack-dev-server",
+    "postinstall": "npm link ../rust/pkg",
+    "postupdate": "npm link ../rust/pkg"
+  },
+  "dependencies": {
+    "rustlib": "../rust/pkg"
+  },
+  "devDependencies": {
+    "@open-wc/webpack-import-meta-loader": "^0.4.7",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  }
+}

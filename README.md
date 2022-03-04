@@ -16,7 +16,14 @@ cargo install cargo-ndk
 编译构建：
 
 ```shell
-./scripts/ios_build.sh
+./scripts/android_build.sh
+```
+
+运行 App：
+
+```shell
+# 在 android 目录
+open . -a /Applications/Android\ Studio.app
 ```
 
 ## iOS
@@ -36,4 +43,33 @@ cargo install cbindgen
 
 ```shell
 ./scripts/ios_build.sh
+```
+
+运行 App：
+
+```shell
+# 在 ios 目录
+open ios.xcworkspace
+```
+
+## Web
+
+环境准备：
+
+```shell
+ cargo install wasm-pack
+```
+
+编译构建：
+
+```shell
+./scripts/web_build.sh
+```
+
+运行 App：
+
+```shell
+# 在 web 目录
+yarn install
+yarn serve
 ```
