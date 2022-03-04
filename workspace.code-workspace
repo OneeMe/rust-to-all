@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "rust"
+		},
+		{
+			"path": "ios"
+		},
+		{
+			"path": "android"
+		},
+		{
+			"path": "web"
+		}
+	],
+	"settings": {}
+}
