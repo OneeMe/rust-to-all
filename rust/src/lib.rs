@@ -1,6 +1,9 @@
 use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
 
+#[cfg(target_os = "android")]
+mod android;
+
 #[no_mangle]
 pub unsafe extern "C" fn hello(to: *const c_char) -> *mut c_char {
     let c_str = CStr::from_ptr(to);
