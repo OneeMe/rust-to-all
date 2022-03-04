@@ -8,6 +8,5 @@ Pod::Spec.new do |spec|
   spec.source       = { :git => 'https://github.com/OneeMe/rust-to-all.git', :tag => '0.0.1' }
   # TODO：可以自动化生成一些头森建
   spec.source_files = 'rustlib.h'
-  # TODO: 可以合并一下二进制
-  spec.vendored_libraries = 'target/x86_64-apple-ios/release/deps/librustlib.a'
+  spec.vendored_libraries = 'target/universal/release/librustlib.a'
 end
