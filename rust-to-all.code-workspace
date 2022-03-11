@@ -13,6 +13,7 @@
 			"path": "web"
 		},
 		{
+			"name": "react-native-js",
 			"path": "."
 		}
 	],
