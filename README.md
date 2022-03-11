@@ -8,7 +8,7 @@
 
 ```shell
 # 只安装比较常用的两个 target
-rutup target add aarch64-linux-android x86_64-linux-android
+rustup target add aarch64-linux-android x86_64-linux-android
 # 用于生成符合 ndk 标准的 so
 cargo install cargo-ndk
 ```

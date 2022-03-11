@@ -11,7 +11,7 @@ use std::os::raw::c_char;
 // Remember the JNI naming conventions.
 
 #[no_mangle]
-pub extern "system" fn Java_com_onee_rustlib_Rusty_helloDirect(
+pub extern "system" fn Java_com_onee_rusty_NativeLib_helloDirect(
     env: JNIEnv,
     _: JClass,
     input: JString,
@@ -41,7 +41,7 @@ pub unsafe extern "C" fn hello(to: *const c_char) -> *mut c_char {
 
 #[allow(clippy::similar_names)]
 #[no_mangle]
-pub extern "system" fn Java_com_onee_rustlib_Rusty_hello(
+pub extern "system" fn Java_com_onee_rusty_NativeLib_hello(
     env: JNIEnv,
     _: JClass,
     input: JString,
