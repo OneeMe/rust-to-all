@@ -7,8 +7,26 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.ReactPackageTurboModuleManagerDelegate;
+import com.facebook.react.bridge.JSIModulePackage;
+import com.facebook.react.bridge.JSIModuleProvider;
+import com.facebook.react.bridge.JSIModuleSpec;
+import com.facebook.react.bridge.JSIModuleType;
+import com.facebook.react.bridge.JavaScriptContextHolder;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.UIManager;
+import com.facebook.react.config.ReactFeatureFlags;
+import com.facebook.react.fabric.ComponentFactory;
+import com.facebook.react.fabric.CoreComponentsRegistry;
+import com.facebook.react.fabric.FabricJSIModuleProvider;
+import com.facebook.react.fabric.ReactNativeConfig;
+import com.facebook.react.uimanager.ViewManagerRegistry;
 import com.facebook.soloader.SoLoader;
+import com.rn.components.MainComponentsRegistry;
+import com.rn.modules.MainApplicationTurboModuleManagerDelegate;
+
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -33,6 +51,52 @@ public class MainApplication extends Application implements ReactApplication {
         protected String getJSMainModuleName() {
           return "index";
         }
+
+          @Override
+          protected JSIModulePackage getJSIModulePackage() {
+              return new JSIModulePackage() {
+                  @Override
+                  public List<JSIModuleSpec> getJSIModules(
+                          final ReactApplicationContext reactApplicationContext,
+                          final JavaScriptContextHolder jsContext) {
+                      final List<JSIModuleSpec> specs = new ArrayList<>();
+
+                      // Here we provide a new JSIModuleSpec that will be responsible of providing the
+                      // custom Fabric Components.
+                      specs.add(
+                              new JSIModuleSpec() {
+                                  @Override
+                                  public JSIModuleType getJSIModuleType() {
+                                      return JSIModuleType.UIManager;
+                                  }
+
+                                  @Override
+                                  public JSIModuleProvider<UIManager> getJSIModuleProvider() {
+                                      final ComponentFactory componentFactory = new ComponentFactory();
+                                      CoreComponentsRegistry.register(componentFactory);
+
+                                      // Here we register a Components Registry.
+                                      // The one that is generated with the template contains no components
+                                      // and just provides you the one from React Native core.
+                                      MainComponentsRegistry.register(componentFactory);
+
+                                      final ReactInstanceManager reactInstanceManager = getReactInstanceManager();
+
+                                      ViewManagerRegistry viewManagerRegistry =
+                                              new ViewManagerRegistry(
+                                                      reactInstanceManager.getOrCreateViewManagers(reactApplicationContext));
+
+                                      return new FabricJSIModuleProvider(
+                                              reactApplicationContext,
+                                              componentFactory,
+                                              new EmptyReactNativeConfig(),
+                                      viewManagerRegistry);
+                                  }
+                              });
+                      return specs;
+                  }
+              };
+          }
       };
 
   @Override
@@ -45,9 +109,15 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    enableFeatures();
   }
 
-  /**
+    private void enableFeatures() {
+        ReactFeatureFlags.enableFabricRenderer = true;
+        ReactFeatureFlags.useTurboModules = false;
+    }
+
+    /**
    * Loads Flipper in React Native templates. Call this in the onCreate method with something like
    * initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
    *
