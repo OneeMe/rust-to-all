@@ -1,6 +1,4 @@
-package com.rn;
-
-import android.os.Bundle;
+package com.onee.rustapp;
 
 import com.facebook.react.ReactActivity;
 
@@ -11,6 +9,6 @@ public class ReactNativeHostActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "rn";
+    return "rustapp";
   }
 }

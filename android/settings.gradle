@@ -22,7 +22,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = 'rn'
+rootProject.name = 'rust-to-all'
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 include ':app'
 include ':rusty'

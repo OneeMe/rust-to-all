@@ -1,4 +1,4 @@
-package com.rn;
+package com.onee.rustapp;
 
 
 import com.facebook.react.fabric.ReactNativeConfig;

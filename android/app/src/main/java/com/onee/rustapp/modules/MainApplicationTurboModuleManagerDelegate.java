@@ -1,4 +1,4 @@
-package com.rn.modules;
+package com.onee.rustapp.modules;
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.ReactPackageTurboModuleManagerDelegate;
