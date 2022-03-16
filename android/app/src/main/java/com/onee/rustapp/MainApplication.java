@@ -2,7 +2,11 @@ package com.onee.rustapp;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
+import com.facebook.debug.debugoverlay.model.DebugOverlayTag;
+import com.facebook.debug.holder.Printer;
+import com.facebook.debug.holder.PrinterHolder;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -106,7 +110,27 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    enablePrinter();
   }
+
+    private void enablePrinter() {
+        PrinterHolder.setPrinter(new Printer() {
+            @Override
+            public void logMessage(DebugOverlayTag tag, String message, Object... args) {
+                Log.d(tag.name, message);
+            }
+
+            @Override
+            public void logMessage(DebugOverlayTag tag, String message) {
+                Log.d(tag.name, message);
+            }
+
+            @Override
+            public boolean shouldDisplayLogMessage(DebugOverlayTag tag) {
+                return true;
+            }
+        });
+    }
 
     /**
    * Loads Flipper in React Native templates. Call this in the onCreate method with something like
