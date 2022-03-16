@@ -4,12 +4,14 @@ package com.onee.rustapp;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.react.ReactRootView;
+import com.facebook.react.bridge.JavaOnlyArray;
 import com.facebook.react.bridge.JavaOnlyMap;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.queue.MessageQueueThreadSpec;
@@ -38,7 +40,8 @@ public class RustHostActivity extends AppCompatActivity implements DefaultHardwa
         ViewGroup root = findViewById(R.id.root_layout);
 
         ReactRootView reactRootView = new ReactRootView(this);
-        reactRootView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        reactRootView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        reactRootView.setBackgroundColor(Color.GRAY);
         root.addView(reactRootView);
 
         ReactApplicationContext reactContext = new ReactApplicationContext(getApplicationContext());
@@ -63,12 +66,17 @@ public class RustHostActivity extends AppCompatActivity implements DefaultHardwa
         viewManagers.add(new ReactViewManager());
         viewManagers.add(new ReactViewManager());
         uiManagerModule = new UIManagerModule(reactContext, viewManagers, 0);
+        uiManagerModule.onHostResume();
         int rootTag = uiManagerModule.addRootView(reactRootView);
+        uiManagerModule.updateRootLayoutSpecs(rootTag, View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), 0, 0);
+        Log.d(TAG, "root tag is " + rootTag);
+
 
         reactContext.runOnNativeModulesQueueThread(new Runnable() {
             @Override
             public void run() {
-                uiManagerModule.createView(1, "RCTView", rootTag, JavaOnlyMap.of("backgroundColor", Color.RED));
+                uiManagerModule.createView(rootTag + 1, "RCTView", rootTag, JavaOnlyMap.of("backgroundColor", -65536, "width", 100, "height", 100, "left", 10.0, "top", 20.0, "collapsable", false));
+                uiManagerModule.setChildren(rootTag, JavaOnlyArray.of(rootTag + 1));
                 uiManagerModule.onBatchComplete();
             }
         });

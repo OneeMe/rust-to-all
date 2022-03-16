@@ -17,7 +17,9 @@ import com.facebook.react.bridge.NativeModuleRegistry;
 import com.facebook.react.bridge.NotThreadSafeBridgeIdleDebugListener;
 import com.facebook.react.bridge.RuntimeExecutor;
 import com.facebook.react.bridge.RuntimeScheduler;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.queue.ReactQueueConfiguration;
+import com.facebook.react.modules.appregistry.AppRegistry;
 import com.facebook.react.turbomodule.core.interfaces.CallInvokerHolder;
 
 import java.util.Collection;
@@ -78,7 +80,23 @@ class RustCatalystInstance implements CatalystInstance {
 
    @Override
    public <T extends JavaScriptModule> T getJSModule(Class<T> jsInterface) {
-      return null;
+      return (T) new AppRegistry() {
+
+         @Override
+         public void runApplication(String appKey, WritableMap appParameters) {
+
+         }
+
+         @Override
+         public void unmountApplicationComponentAtRootTag(int rootNodeTag) {
+
+         }
+
+         @Override
+         public void startHeadlessTask(int taskId, String taskKey, WritableMap data) {
+
+         }
+      };
    }
 
    @Override
