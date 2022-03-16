@@ -2,6 +2,7 @@ package com.onee.rustapp;
 
 import android.app.Application;
 import android.content.Context;
+
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -14,7 +15,6 @@ import com.facebook.react.bridge.JSIModuleType;
 import com.facebook.react.bridge.JavaScriptContextHolder;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.UIManager;
-import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.react.fabric.ComponentFactory;
 import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
@@ -35,7 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
           return BuildConfig.DEBUG;
         }
 
-        @Override
+          @Override
         protected List<ReactPackage> getPackages() {
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
@@ -106,13 +106,7 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
-    enableFeatures();
   }
-
-    private void enableFeatures() {
-        ReactFeatureFlags.enableFabricRenderer = true;
-        ReactFeatureFlags.useTurboModules = false;
-    }
 
     /**
    * Loads Flipper in React Native templates. Call this in the onCreate method with something like

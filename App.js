@@ -12,7 +12,9 @@ class App extends Component {
     return (
       <View
         style={styles.item}
-      ></View>
+      >
+        <Text>test</Text>
+      </View>
     )
   }
 }
