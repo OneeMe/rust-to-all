@@ -24,6 +24,8 @@ import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.ViewManager;
+import com.facebook.react.views.text.ReactRawTextManager;
+import com.facebook.react.views.text.ReactTextViewManager;
 import com.facebook.react.views.view.ReactViewManager;
 
 import java.util.ArrayList;
@@ -63,8 +65,8 @@ public class RustHostActivity extends AppCompatActivity implements DefaultHardwa
         reactContext.initializeWithInstance(rustCatalystInstance);
         List<ViewManager> viewManagers = new ArrayList<>();
         viewManagers.add(new ReactViewManager());
-        viewManagers.add(new ReactViewManager());
-        viewManagers.add(new ReactViewManager());
+        viewManagers.add(new ReactTextViewManager());
+        viewManagers.add(new ReactRawTextManager());
         uiManagerModule = new UIManagerModule(reactContext, viewManagers, 0);
         uiManagerModule.onHostResume();
         int rootTag = uiManagerModule.addRootView(reactRootView);
@@ -76,7 +78,9 @@ public class RustHostActivity extends AppCompatActivity implements DefaultHardwa
             @Override
             public void run() {
                 uiManagerModule.createView(rootTag + 1, "RCTView", rootTag, JavaOnlyMap.of("backgroundColor", -65536, "width", 100, "height", 100, "left", 10.0, "top", 20.0, "collapsable", false));
+                uiManagerModule.createView(rootTag + 2, "RCTView", rootTag, JavaOnlyMap.of("width", 50, "height", 50, "backgroundColor", Color.BLACK));
                 uiManagerModule.setChildren(rootTag, JavaOnlyArray.of(rootTag + 1));
+                uiManagerModule.setChildren(rootTag  + 1, JavaOnlyArray.of(rootTag + 2));
                 uiManagerModule.onBatchComplete();
             }
         });

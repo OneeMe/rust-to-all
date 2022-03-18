@@ -9,21 +9,33 @@ import {
 
 class App extends Component {
   render() {
+    const items = Array(1).fill(0).map((_, index) => {
+      return (
+        <View style={styles.item} key={index} />
+      );
+    });
     return (
       <View
-        style={styles.item}
+        style={styles.container}
       >
-        <Text>test</Text>
+        {items}
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexWrap: 'wrap',
+    backgroundColor: 'white',
+    display: 'flex',
+    flexDirection: 'row',
+  },
   item: {
-    width: 100,
-    height: 100,
-    backgroundColor: 'red',
+    width: 20,
+    height: 20,
+    backgroundColor: 'black',
+    margin: 2,
   },
 });
 
