@@ -27,6 +27,8 @@ import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.views.text.ReactRawTextManager;
 import com.facebook.react.views.text.ReactTextViewManager;
 import com.facebook.react.views.view.ReactViewManager;
+import com.onee.rusty.RustCatalystInstance;
+import com.onee.rusty.RustyEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +41,25 @@ public class RustHostActivity extends AppCompatActivity implements DefaultHardwa
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rust_host);
-        ViewGroup root = findViewById(R.id.root_layout);
 
+        run(false);
+    }
+
+    private void run(boolean isNative) {
+        ViewGroup root = findViewById(R.id.root_layout);
+        if (isNative) {
+            runNativeCode(root);
+        } else {
+            runRustCode(root);
+        }
+    }
+
+    private void runRustCode(ViewGroup root) {
+        RustyEngine engine = new RustyEngine(this);
+        engine.run();
+    }
+
+    private void runNativeCode(ViewGroup root) {
         ReactRootView reactRootView = new ReactRootView(this);
         reactRootView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         reactRootView.setBackgroundColor(Color.GRAY);

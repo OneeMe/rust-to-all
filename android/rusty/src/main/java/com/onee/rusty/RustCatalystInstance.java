@@ -1,4 +1,4 @@
-package com.onee.rustapp;
+package com.onee.rusty;
 
 import android.content.res.AssetManager;
 
@@ -25,7 +25,7 @@ import com.facebook.react.turbomodule.core.interfaces.CallInvokerHolder;
 import java.util.Collection;
 import java.util.List;
 
-class RustCatalystInstance implements CatalystInstance {
+public class RustCatalystInstance implements CatalystInstance {
    private ReactQueueConfiguration reactQueueConfiguration;
 
    public RustCatalystInstance(ReactQueueConfiguration reactQueueConfiguration) {
