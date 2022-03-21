@@ -48,6 +48,9 @@ public class RustyEngine {
     }
 
     public void run() {
-
+        System.loadLibrary("rustlib");
+        Foo foo = new Foo(1);
+        int result = foo.f(1, 3);
+        Log.d(TAG, "result: " + result);
     }
 }
