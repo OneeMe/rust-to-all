@@ -2,8 +2,14 @@ use flapigen::{JavaConfig, LanguageConfig};
 use std::path::Path;
 
 fn main() {
-    let in_src = Path::new("glue").join("android_glue.rs.in");
-    let out_src = Path::new("src").join("android_glue.rs");
+    let in_src = Path::new("src")
+        .join("model")
+        .join("android")
+        .join("export.d.rs");
+    let out_src = Path::new("src")
+        .join("model")
+        .join("android")
+        .join("export.rs");
     //ANCHOR: config
     let swig_gen = flapigen::Generator::new(LanguageConfig::JavaConfig(
         JavaConfig::new(

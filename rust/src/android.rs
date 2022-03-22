@@ -1,61 +1,25 @@
-#![cfg(target_os = "android")]
+// #![cfg(target_os = "android")]
 #![allow(non_snake_case)]
 
-use jni::objects::{JClass, JString};
-use jni::sys::jstring;
+extern crate android_logger;
+
+use android_logger::{Config, FilterBuilder};
+use jni::objects::{JClass, JObject};
 use jni::JNIEnv;
-use std::ffi::{CStr, CString};
-use std::os::raw::c_char;
-
-// NOTE: RustKt references the name rusty.kt, which will be the kotlin file exposing the functions below.
-// Remember the JNI naming conventions.
+use log::Level;
 
 #[no_mangle]
-pub extern "system" fn Java_com_onee_rusty_NativeLib_helloDirect(
-    env: JNIEnv,
-    _: JClass,
-    input: JString,
-) -> jstring {
-    let input: String = env
-        .get_string(input)
-        .expect("Couldn't get Java string!")
-        .into();
-    let output = env
-        .new_string(format!("Hello from Rust: {}", input))
-        .expect("Couldn't create a Java string!");
-    output.into_inner()
-}
-
-#[no_mangle]
-pub unsafe extern "C" fn hello(to: *const c_char) -> *mut c_char {
-    let c_str = CStr::from_ptr(to);
-    let recipient = match c_str.to_str() {
-        Ok(s) => s,
-        Err(_) => "you",
-    };
-
-    CString::new(format!("Hello from Rust: {}", recipient))
-        .unwrap()
-        .into_raw()
-}
-
-#[allow(clippy::similar_names)]
-#[no_mangle]
-pub extern "system" fn Java_com_onee_rusty_NativeLib_hello(
-    env: JNIEnv,
-    _: JClass,
-    input: JString,
-) -> jstring {
-    let java_str = env.get_string(input).expect("Couldn't get Java string!");
-    // we call our generic func for iOS
-    let java_str_ptr = java_str.as_ptr();
-    let result = unsafe { hello(java_str_ptr) };
-    // freeing memory from CString in ios function
-    // if we call hello_release we won't have access to the result
-    let result_ptr = unsafe { CString::from_raw(result) };
-    let result_str = result_ptr.to_str().unwrap();
-    let output = env
-        .new_string(result_str)
-        .expect("Couldn't create a Java string!");
-    output.into_inner()
+pub extern "system" fn Java_com_onee_rusty_RustyEngine_launch(_env: JNIEnv, _class: JClass) -> () {
+    android_logger::init_once(
+        Config::default()
+            .with_min_level(Level::Trace) // limit log level
+            .with_tag("mytag") // logs will show under mytag tag
+            .with_filter(
+                // configure messages for specific crate
+                FilterBuilder::new()
+                    .parse("debug,hello::crate=error")
+                    .build(),
+            ),
+    );
+    debug!("launched");
 }

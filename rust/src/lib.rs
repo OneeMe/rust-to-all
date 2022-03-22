@@ -1,5 +1,8 @@
+#[macro_use]
+extern crate log;
+
 /// cbindgen:ignore
-#[cfg(target_os = "android")]
+// #[cfg(target_os = "android")]
 mod android;
 #[cfg(target_os = "android")]
 mod android_glue;
