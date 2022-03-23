@@ -2,7 +2,7 @@ use flapigen::{JavaConfig, LanguageConfig};
 use std::path::Path;
 
 fn main() {
-    let in_src = Path::new("src").join("export.d.rs");
+    let in_src = Path::new("src").join("export.rs.in");
     let out_src = Path::new("src").join("export.rs");
     let swig_gen = flapigen::Generator::new(LanguageConfig::JavaConfig(
         JavaConfig::new(
