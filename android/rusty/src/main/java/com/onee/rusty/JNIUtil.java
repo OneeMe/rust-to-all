@@ -1,6 +1,10 @@
 package com.onee.rusty;
 
 
+import android.util.Log;
+
+import com.facebook.react.bridge.ReadableMap;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,5 +63,15 @@ final class JNIUtil
       {
          return 'L' + c.getName().replace('.', '/') + ';';
       }
+   }
+
+   static Method getMethod(Class kClass, String name, Class[] argsClasses) {
+      Method method = null;
+      try {
+         method = kClass.getMethod(name, argsClasses);
+      } catch (NoSuchMethodException e) {
+         e.printStackTrace();
+      }
+      return method;
    }
 }

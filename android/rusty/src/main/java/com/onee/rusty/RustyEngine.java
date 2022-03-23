@@ -15,6 +15,8 @@ import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.views.text.ReactRawTextManager;
 import com.facebook.react.views.text.ReactTextViewManager;
 import com.facebook.react.views.view.ReactViewManager;
+import com.onee.rusty.glue.CommandList;
+import com.onee.rusty.glue.Engine;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -22,12 +24,13 @@ import java.util.List;
 
 public class RustyEngine {
     static {
-        System.loadLibrary("rustlib");
+//        System.loadLibrary("rustlib");
     }
 
     private static String TAG = "RustyEngine";
     private UIManagerModule uiManagerModule;
     private ReactApplicationContext reactContext;
+    private Engine engine;
 
     public RustyEngine(Context context) {
         reactContext = new ReactApplicationContext(context.getApplicationContext());
@@ -55,38 +58,26 @@ public class RustyEngine {
     }
 
     public void run() {
-        try {
-            Class[] classes = new Class[4];
-            classes[0] = int.class;
-            classes[1] = String.class;
-            classes[2] = int.class;
-            classes[3] = ReadableMap.class;
-            Method method = uiManagerModule.getClass().getMethod("createView", classes);
-            Log.d(TAG, JNIUtil.getJNIMethodSignature(method));
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+        System.loadLibrary("rustlib");
+        engine = new Engine();
+        engine.launch();
         reactContext.runOnNativeModulesQueueThread(new Runnable() {
             @Override
             public void run() {
-                CommandList commandList = launch();
-                for (int i = 0; i< commandList.len(); i++) {
-                    Command command = commandList.at(i);
-                    switch (command.get_commandType()) {
-                        case SetChild:
-                            break;
-                        case CreateView:
-                            break;
-                        default:
-                    }
-                }
+                CommandList commandList = engine.run_app(0);
+//                for (int i = 0; i< commandList.length(); i++) {
+//                    Command command = commandList.at(i);
+//                    switch (command.commandType()) {
+//                        case SetChild:
+//                            Log.d(TAG, "Type is set child");
+//                            break;
+//                        case CreateView:
+//                            Log.d(TAG, "Type is create view");
+//                            break;
+//                        default:
+//                    }
+//                }
             }
         });
-    }
-
-    private native CommandList launch();
-
-    public static void tapTap() {
-        Log.d(TAG, "tapTap hello");
     }
 }
