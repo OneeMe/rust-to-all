@@ -1,10 +1,10 @@
-// #![cfg(target_os = "android")]
+#![cfg(target_os = "android")]
 #![allow(non_snake_case)]
 
 extern crate android_logger;
 
 use android_logger::{Config, FilterBuilder};
-use jni::objects::{JClass, JObject};
+use jni::objects::JClass;
 use jni::JNIEnv;
 use log::Level;
 
