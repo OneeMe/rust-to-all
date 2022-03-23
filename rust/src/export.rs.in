@@ -57,5 +57,5 @@ foreign_class!(class Engine {
     self_type Engine;
     constructor Engine::new() -> Engine;
     fn Engine::launch(&self) -> ();
-    fn Engine::run_app(&self, _: i32) -> CommandList;
+    fn Engine::run_app(&self, _: i32) -> CommandList; alias runApp;
 });

@@ -72,7 +72,7 @@ public class RustyEngine {
         reactContext.runOnNativeModulesQueueThread(new Runnable() {
             @Override
             public void run() {
-                CommandList commandList = engine.run_app(0);
+                CommandList commandList = engine.runApp(0);
                 for (int i = 0; i< commandList.length(); i++) {
                     Command command = commandList.get(i);
                     switch (command.commandType()) {

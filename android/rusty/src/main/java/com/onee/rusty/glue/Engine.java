@@ -14,13 +14,13 @@ public final class Engine {
     }
     private static native void do_launch(long self);
 
-    public final @NonNull CommandList run_app(int a0) {
-        long ret = do_run_app(mNativeObj, a0);
+    public final @NonNull CommandList runApp(int a0) {
+        long ret = do_runApp(mNativeObj, a0);
         CommandList convRet = new CommandList(InternalPointerMarker.RAW_PTR, ret);
 
         return convRet;
     }
-    private static native long do_run_app(long self, int a0);
+    private static native long do_runApp(long self, int a0);
 
     public synchronized void delete() {
         if (mNativeObj != 0) {
