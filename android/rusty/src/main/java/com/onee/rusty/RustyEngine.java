@@ -15,6 +15,7 @@ import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.views.text.ReactRawTextManager;
 import com.facebook.react.views.text.ReactTextViewManager;
 import com.facebook.react.views.view.ReactViewManager;
+import com.onee.rusty.glue.Command;
 import com.onee.rusty.glue.CommandList;
 import com.onee.rusty.glue.Engine;
 
@@ -65,18 +66,18 @@ public class RustyEngine {
             @Override
             public void run() {
                 CommandList commandList = engine.run_app(0);
-//                for (int i = 0; i< commandList.length(); i++) {
-//                    Command command = commandList.at(i);
-//                    switch (command.commandType()) {
-//                        case SetChild:
-//                            Log.d(TAG, "Type is set child");
-//                            break;
-//                        case CreateView:
-//                            Log.d(TAG, "Type is create view");
-//                            break;
-//                        default:
-//                    }
-//                }
+                for (int i = 0; i< commandList.length(); i++) {
+                    Command command = commandList.get(i);
+                    switch (command.commandType()) {
+                        case SetChild:
+                            Log.d(TAG, "Type is set child");
+                            break;
+                        case CreateView:
+                            Log.d(TAG, "Type is create view, view id is" + command.tag() + ", viewName is " + command.className());
+                            break;
+                        default:
+                    }
+                }
             }
         });
     }
