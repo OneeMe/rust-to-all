@@ -1,78 +1,7 @@
 use jni::sys::*;
 
-extern crate android_logger;
-
-use android_logger::Config;
-use log::Level;
-
-use std::vec::Vec;
-
-struct Engine {}
-
-impl Engine {
-    fn new() -> Self {
-        Engine {}
-    }
-    fn launch(&self) {
-        android_logger::init_once(
-            Config::default()
-                .with_min_level(Level::Trace)
-                .with_tag("Rust"),
-        );
-        debug!("launched");
-    }
-    fn run_app(&self, app_id: i32) -> CommandList {
-        CommandList {
-            commands: vec![Command {
-                command_type: CommandType::CreateView,
-                tag: 2,
-                class_name: "RCTView".to_owned(),
-                root_view_tag: 1,
-            }],
-        }
-    }
-}
-
-struct CommandList {
-    commands: Vec<Command>,
-}
-
-impl CommandList {
-    fn new(commands: Vec<Command>) -> Self {
-        CommandList { commands }
-    }
-    fn length(&self) -> usize {
-        self.commands.len()
-    }
-    fn at(&self, index: usize) -> Command {
-        self.commands[index].clone()
-    }
-}
-
-#[derive(Clone)]
-enum CommandType {
-    CreateView,
-    SetChild,
-}
-
-#[derive(Clone)]
-struct Command {
-    command_type: CommandType,
-    tag: u32,
-    class_name: String,
-    root_view_tag: u32,
-}
-
-impl Command {
-    fn new(command_type: CommandType, tag: u32, class_name: String, root_view_tag: u32) -> Self {
-        Command {
-            command_type,
-            tag,
-            class_name,
-            root_view_tag,
-        }
-    }
-}
+use crate::core::command::*;
+use crate::core::*;
 
 // foreign_enum!(
 //     enum CommandType {
@@ -84,9 +13,7 @@ impl Command {
 foreign_class!(class CommandList {
     self_type CommandList;
     constructor CommandList::new() -> CommandList {
-        CommandList {
-            commands: vec![],
-        }
+        CommandList::new(vec![])
     }
     // fn CommandList::length(&self) -> usize;
     // fn at(&self, index: usize) -> Command;
