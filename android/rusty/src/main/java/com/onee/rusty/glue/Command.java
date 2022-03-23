@@ -35,6 +35,14 @@ public final class Command {
     }
     private static native long do_rootViewTag(long self);
 
+    public final @NonNull PropertyList properties() {
+        long ret = do_properties(mNativeObj);
+        PropertyList convRet = new PropertyList(InternalPointerMarker.RAW_PTR, ret);
+
+        return convRet;
+    }
+    private static native long do_properties(long self);
+
     public synchronized void delete() {
         if (mNativeObj != 0) {
             do_delete(mNativeObj);

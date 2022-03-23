@@ -32,6 +32,25 @@ foreign_class!(class Command {
     fn Command::rootViewTag(&self) -> u32 {
         this.root_view_tag
     }
+    fn Command::properties(&self) -> PropertyList {
+        this.properties.clone()
+    }
+});
+
+foreign_class!(class PropertyList {
+    self_type PropertyList;
+    private constructor = empty;
+    fn PropertyList::length(&self) -> usize;
+    fn PropertyList::get(&self, _: usize) -> String;
+    foreign_code r#"
+    public com.facebook.react.bridge.JavaOnlyMap toMap() {
+        com.facebook.react.bridge.JavaOnlyMap map = new com.facebook.react.bridge.JavaOnlyMap();
+        for (int i = 0;i < this.length();i += 2) {
+            map.putDouble(this.get(i), Double.parseDouble(this.get(i + 1)));
+        }
+        return map;
+    }
+    "#;
 });
 
 foreign_class!(class Engine {

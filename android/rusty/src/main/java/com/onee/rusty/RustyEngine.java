@@ -2,7 +2,10 @@ package com.onee.rusty;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
+import com.facebook.react.ReactRootView;
+import com.facebook.react.bridge.JavaOnlyMap;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.queue.MessageQueueThreadSpec;
@@ -58,10 +61,13 @@ public class RustyEngine {
         uiManagerModule = new UIManagerModule(reactContext, viewManagers, 0);
     }
 
-    public void run() {
+    public void run(ReactRootView rootView) {
         System.loadLibrary("rustlib");
         engine = new Engine();
         engine.launch();
+        int rootTag = uiManagerModule.addRootView(rootView);
+        uiManagerModule.updateRootLayoutSpecs(rootTag, View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), 0, 0);
+        Log.d(TAG, "root tag is " + rootTag);
         reactContext.runOnNativeModulesQueueThread(new Runnable() {
             @Override
             public void run() {
@@ -74,6 +80,7 @@ public class RustyEngine {
                             break;
                         case CreateView:
                             Log.d(TAG, "Type is create view, view id is" + command.tag() + ", viewName is " + command.className());
+                            uiManagerModule.createView((int)command.tag(), command.className(), (int)command.rootViewTag(), command.properties().toMap());
                             break;
                         default:
                     }

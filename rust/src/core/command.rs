@@ -28,6 +28,24 @@ pub struct Command {
     pub tag: u32,
     pub class_name: String,
     pub root_view_tag: u32,
+    pub properties: PropertyList,
+}
+
+#[derive(Clone)]
+pub struct PropertyList {
+    pub properties: Vec<String>,
+}
+
+impl PropertyList {
+    pub fn new(properties: Vec<String>) -> Self {
+        PropertyList { properties }
+    }
+    pub fn length(&self) -> usize {
+        self.properties.len()
+    }
+    pub fn get(&self, index: usize) -> String {
+        self.properties[index].clone()
+    }
 }
 
 impl Command {
@@ -36,28 +54,14 @@ impl Command {
         tag: u32,
         class_name: String,
         root_view_tag: u32,
+        properties: PropertyList,
     ) -> Self {
         Command {
             command_type,
             tag,
             class_name,
             root_view_tag,
+            properties,
         }
-    }
-
-    pub fn command_type(&self) -> CommandType {
-        self.command_type
-    }
-
-    pub fn tag(&self) -> u32 {
-        self.tag
-    }
-
-    pub fn class_name(&self) -> String {
-        self.class_name.clone()
-    }
-
-    pub fn root_view_tag(&self) -> u32 {
-        self.root_view_tag
     }
 }

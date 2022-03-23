@@ -21,6 +21,14 @@ impl Engine {
             2,
             "RCTView".to_owned(),
             1,
+            PropertyList::new(vec![
+                "backgroundColor".to_owned(),
+                "-65536".to_owned(),
+                "width".to_owned(),
+                "100".to_owned(),
+                "height".to_owned(),
+                "100".to_owned(),
+            ]),
         )])
     }
 }
