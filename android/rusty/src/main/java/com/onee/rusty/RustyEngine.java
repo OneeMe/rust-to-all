@@ -79,7 +79,7 @@ public class RustyEngine {
                             Log.d(TAG, "Type is set child");
                             break;
                         case CreateView:
-                            Log.d(TAG, "Type is create view, view id is" + command.tag() + ", viewName is " + command.className());
+                            Log.d(TAG, "Type is create view, view id is " + command.tag() + ", viewName is " + command.className() + ", prop is " + command.properties().toMap());
                             uiManagerModule.createView((int)command.tag(), command.className(), (int)command.rootViewTag(), command.properties().toMap());
                             break;
                         default:
