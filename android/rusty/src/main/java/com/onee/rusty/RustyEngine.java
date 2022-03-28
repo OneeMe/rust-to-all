@@ -6,9 +6,7 @@ import android.view.View;
 
 import com.facebook.react.ReactRootView;
 import com.facebook.react.bridge.JavaOnlyArray;
-import com.facebook.react.bridge.JavaOnlyMap;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.queue.MessageQueueThreadSpec;
 import com.facebook.react.bridge.queue.QueueThreadExceptionHandler;
 import com.facebook.react.bridge.queue.ReactQueueConfiguration;
@@ -23,7 +21,6 @@ import com.onee.rusty.glue.Command;
 import com.onee.rusty.glue.CommandList;
 import com.onee.rusty.glue.Engine;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +30,7 @@ public class RustyEngine {
     }
 
     private static String TAG = "RustyEngine";
-    private UIManagerModule uiManagerModule;
+    private RustHostUIManager uiManager;
     private ReactApplicationContext reactContext;
     private Engine engine;
 
@@ -59,35 +56,20 @@ public class RustyEngine {
         viewManagers.add(new ReactViewManager());
         viewManagers.add(new ReactTextViewManager());
         viewManagers.add(new ReactRawTextManager());
-        uiManagerModule = new UIManagerModule(reactContext, viewManagers, 0);
+        uiManager = new RustHostUIManager(reactContext, viewManagers, 0);
     }
 
     public void run(ReactRootView rootView) {
         System.loadLibrary("rustlib");
         engine = new Engine();
         engine.launch();
-        int rootTag = uiManagerModule.addRootView(rootView);
-        uiManagerModule.updateRootLayoutSpecs(rootTag, View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), 0, 0);
+        int rootTag = uiManager.addRootView(rootView);
+        uiManager.updateRootLayoutSpecs(rootTag, View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), 0, 0);
         Log.d(TAG, "root tag is " + rootTag);
         reactContext.runOnNativeModulesQueueThread(new Runnable() {
             @Override
             public void run() {
-                CommandList commandList = engine.runApp(0);
-                for (int i = 0; i< commandList.length(); i++) {
-                    Command command = commandList.get(i);
-                    switch (command.commandType()) {
-                        case SetChild:
-                            Log.d(TAG, "Type is create view, view id is " + command.tag() + ", child is " + command.rootViewTag());
-                            uiManagerModule.setChildren((int)command.tag(), JavaOnlyArray.of((int)command.rootViewTag()));
-                            break;
-                        case CreateView:
-                            Log.d(TAG, "Type is create view, view id is " + command.tag() + ", viewName is " + command.className() + ", prop is " + command.properties().toMap());
-                            uiManagerModule.createView((int)command.tag(), command.className(), (int)command.rootViewTag(), command.properties().toMap());
-                            break;
-                        default:
-                    }
-                }
-                uiManagerModule.onBatchComplete();
+                engine.runApp(0);
             }
         });
     }

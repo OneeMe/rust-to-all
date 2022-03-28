@@ -1,61 +1,94 @@
 use jni::sys::*;
 
-use crate::core::command::*;
+use crate::core::property::*;
 use crate::core::*;
 
 foreign_enum!(
-    enum CommandType {
-        CreateView = CommandType::CreateView,
-        SetChild = CommandType::SetChild,
+    enum PropertyType {
+        Null = PropertyType::Null,
+        Boolean = PropertyType::Boolean,
+        Number = PropertyType::Number,
+        String = PropertyType::String,
+        Map = PropertyType::Map,
+        Array = PropertyType::Array,
     }
 );
 
-foreign_class!(class CommandList {
-    self_type CommandList;
+foreign_typemap!(
+    ($p:r_type) Vec<PropertyType> => Vec<i32> {
+        $out = $p.iter().map(|ele| ele.to_owned() as i32).collect();
+    };
+);
+
+foreign_class!(class PropertyValue {
+    self_type PropertyValue;
     private constructor = empty;
-    fn CommandList::length(&self) -> usize;
-    fn CommandList::get(&self, _: usize) -> Command;
+    fn PropertyVale::property_type(&self) -> PropertyType {
+        this.property_type.clone()
+    }
+    fn PropertyValue::as_bool(&self) -> bool {
+        this.value.as_bool().unwrap()
+    }
+    fn PropertyValue::as_string(&self) -> String {
+        this.value.as_str().unwrap().to_owned()
+    }
+    fn PropertyValue::as_map(&self) -> PropertyMap {
+        PropertyMap::new(this.value.as_object().unwrap().clone())
+    }
+    fn PropertyValue::as_array(&self) -> PropertyList {
+        PropertyList::new(this.value.as_array().unwrap().clone())
+    }
+    fn PropertyValue::as_number(&self) -> f64 {
+        this.value.as_f64().unwrap()
+    }
+    foreign_code r#"
+    public Object getValue() {
+        switch (property_type()) {
+            case Null:
+                return null;
+            case Number:
+                return as_number();
+            case Boolean:
+                return as_bool();
+            case String:
+                return as_string();
+            case Map:
+                return as_map();
+            case Array:
+                return as_array();
+            default:
+                throw new IllegalStateException("Unexpected value: " + type);
+        }
+    }
+    "#;
 });
 
-foreign_class!(class Command {
-    self_type Command;
+foreign_class!(class PropertyMap {
+    self_type PropertyMap;
     private constructor = empty;
-    fn Command::commandType(&self) -> CommandType {
-        this.command_type
+    fn PropertyMap::import_keys(&self) -> Vec<String>; alias importKeys;
+    fn PropertyMap::import_values(&self) -> Vec<PropertyValue>; alias importValues;
+    fn PropertyMap::import_types(&self) -> Vec<PropertyType>; alias rawImportTypes;
+    foreign_code r#"
+    public PropertyType[] importTypes() {
+        int[] rawTypes = rawImportTypes();
+        PropertyType[] types = new PropertyType[rawTypes.length];
+        for (int i = 0;i < types.length;i++) {
+            types[i] = PropertyType.fromInt(rawTypes[i]);
+        }
+        return types;
     }
-    fn Command::tag(&self) -> u32 {
-        this.tag
-    }
-    fn Command::className(&self) -> String {
-        this.class_name.clone()
-    }
-    fn Command::rootViewTag(&self) -> u32 {
-        this.root_view_tag
-    }
-    fn Command::properties(&self) -> PropertyList {
-        this.properties.clone()
-    }
+    "#;
 });
 
 foreign_class!(class PropertyList {
     self_type PropertyList;
     private constructor = empty;
-    fn PropertyList::length(&self) -> usize;
-    fn PropertyList::get(&self, _: usize) -> String;
-    foreign_code r#"
-    public com.facebook.react.bridge.JavaOnlyMap toMap() {
-        com.facebook.react.bridge.JavaOnlyMap map = new com.facebook.react.bridge.JavaOnlyMap();
-        for (int i = 0;i < this.length();i += 2) {
-            map.putDouble(this.get(i), Double.parseDouble(this.get(i + 1)));
-        }
-        return map;
-    }
-    "#;
 });
 
 foreign_class!(class Engine {
     self_type Engine;
     constructor Engine::new() -> Engine;
     fn Engine::launch(&self) -> ();
-    fn Engine::run_app(&self, _: i32) -> CommandList; alias runApp;
+    fn Engine::run_app(&self, _: i32) -> (); alias runApp;
 });
