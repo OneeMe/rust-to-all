@@ -86,9 +86,18 @@ foreign_class!(class PropertyList {
     private constructor = empty;
 });
 
+foreign_callback!(
+    callback UIManager {
+        self_type UIManager;
+        createView = create_view(&self, tag: u16, class_name: &str, root_view_tag: u16, properties: PropertyMap);
+        setChildren = setChildren(&self, tag: u16, children: PropertyList);
+        onBatchComplete = on_batch_complete(&self);
+    }
+);
+
 foreign_class!(class Engine {
     self_type Engine;
-    constructor Engine::new() -> Engine;
+    constructor Engine::new(manager: Box<dyn UIManager>) -> Engine;
     fn Engine::launch(&self) -> ();
     fn Engine::run_app(&self, _: i32) -> (); alias runApp;
 });

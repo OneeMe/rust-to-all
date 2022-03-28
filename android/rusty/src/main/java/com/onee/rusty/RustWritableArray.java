@@ -1,4 +1,4 @@
 package com.onee.rusty;
 
-public class RustWritableArray extends RustReadableArray {
+public class RustWritableArray  {
 }

@@ -17,8 +17,6 @@ import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.views.text.ReactRawTextManager;
 import com.facebook.react.views.text.ReactTextViewManager;
 import com.facebook.react.views.view.ReactViewManager;
-import com.onee.rusty.glue.Command;
-import com.onee.rusty.glue.CommandList;
 import com.onee.rusty.glue.Engine;
 
 import java.util.ArrayList;
@@ -61,7 +59,7 @@ public class RustyEngine {
 
     public void run(ReactRootView rootView) {
         System.loadLibrary("rustlib");
-        engine = new Engine();
+        engine = new Engine(uiManager);
         engine.launch();
         int rootTag = uiManager.addRootView(rootView);
         uiManager.updateRootLayoutSpecs(rootTag, View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), 0, 0);
