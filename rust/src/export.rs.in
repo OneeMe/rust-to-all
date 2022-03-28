@@ -57,7 +57,7 @@ foreign_class!(class PropertyValue {
             case Array:
                 return as_array();
             default:
-                throw new IllegalStateException("Unexpected value: " + type);
+                throw new IllegalStateException("Unexpected value: " + property_type());
         }
     }
     "#;
@@ -90,7 +90,7 @@ foreign_callback!(
     callback UIManager {
         self_type UIManager;
         createView = create_view(&self, tag: u16, class_name: &str, root_view_tag: u16, properties: PropertyMap);
-        setChildren = setChildren(&self, tag: u16, children: PropertyList);
+        setChildren = set_children(&self, tag: u16, children: PropertyList);
         onBatchComplete = on_batch_complete(&self);
     }
 );

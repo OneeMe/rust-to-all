@@ -88,7 +88,7 @@ public final class PropertyValue {
             case Array:
                 return as_array();
             default:
-                throw new IllegalStateException("Unexpected value: " + type);
+                throw new IllegalStateException("Unexpected value: " + property_type());
         }
     }
     }
