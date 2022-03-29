@@ -2,6 +2,7 @@ package com.onee.rusty;
 
 import androidx.annotation.NonNull;
 
+import com.facebook.react.bridge.JavaOnlyArray;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.ViewManager;
@@ -10,7 +11,10 @@ import com.onee.rusty.glue.PropertyList;
 import com.onee.rusty.glue.PropertyMap;
 import com.onee.rusty.glue.UIManager;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RustHostUIManager extends UIManagerModule implements UIManager {
     public RustHostUIManager(ReactApplicationContext reactContext, List<ViewManager> viewManagersList, int minTimeLeftInFrameForNonBatchedOperationMs) {
@@ -23,7 +27,13 @@ public class RustHostUIManager extends UIManagerModule implements UIManager {
     }
 
     @Override
-    public void setChildren(int tag, @NonNull PropertyList children) {
-        super.setChildren(tag, RustReadableArray.of(children));
+    public void setChildren(int tag, @NonNull int[] children) {
+        // TODO: RN 居然这里都要使用动态类型，后续得想办法改掉
+        List<Integer> intList = new ArrayList<Integer>(children.length);
+        for (int i : children)
+        {
+            intList.add(i);
+        }
+        super.setChildren(tag, JavaOnlyArray.from(intList));
     }
 }

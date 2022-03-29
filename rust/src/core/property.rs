@@ -74,4 +74,25 @@ impl PropertyList {
     pub fn new(vec: Vec<Value>) -> Self {
         PropertyList { vec }
     }
+
+    pub fn import_values(&self) -> Vec<PropertyValue> {
+        self.vec
+            .iter()
+            .map(|value| PropertyValue::new(value.to_owned()))
+            .collect()
+    }
+
+    pub fn import_types(&self) -> Vec<PropertyType> {
+        self.vec
+            .iter()
+            .map(|value| match value {
+                Value::Null => PropertyType::Null,
+                Value::Bool(_) => PropertyType::Boolean,
+                Value::Number(_) => PropertyType::Number,
+                Value::String(_) => PropertyType::String,
+                Value::Array(_) => PropertyType::Array,
+                Value::Object(_) => PropertyType::Map,
+            })
+            .collect()
+    }
 }

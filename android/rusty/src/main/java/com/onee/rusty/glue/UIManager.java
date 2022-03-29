@@ -8,7 +8,7 @@ public interface UIManager {
     void createView(int tag, @NonNull String class_name, int root_view_tag, @NonNull PropertyMap properties);
 
 
-    void setChildren(int tag, @NonNull PropertyList children);
+    void setChildren(int tag, @NonNull int [] children);
 
 
     void onBatchComplete();

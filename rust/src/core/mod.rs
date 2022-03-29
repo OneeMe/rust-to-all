@@ -27,8 +27,8 @@ impl Engine {
             PropertyMap::new(
                 json!(
                     {
-                        "width": "100",
-                        "height": "100",
+                        "width": 100,
+                        "height": 100,
                         "backgroundColor": -65536,
                     }
                 )
@@ -37,29 +37,8 @@ impl Engine {
                 .to_owned(),
             ),
         );
-        // vec![
-        //     Command::new(
-        //         CommandType::CreateView,
-        //         2,
-        //         "RCTView".to_owned(),
-        //         1,
-        //         PropertyMap::new(vec![
-        //             "backgroundColor".to_owned(),
-        //             "-65536".to_owned(),
-        //             "width".to_owned(),
-        //             "100".to_owned(),
-        //             "height".to_owned(),
-        //             "100".to_owned(),
-        //         ]),
-        //     ),
-        //     Command::new(
-        //         CommandType::SetChild,
-        //         1,
-        //         "".to_owned(),
-        //         2,
-        //         PropertyMap::new(vec![]),
-        //     ),
-        // ]
+        self.manager.set_children(1, vec![2]);
+        self.manager.on_batch_complete();
     }
 }
 
@@ -71,6 +50,6 @@ pub trait UIManager {
         root_view_tag: u16,
         properties: PropertyMap,
     ) -> ();
-    fn set_children(&self, tag: u16, children: PropertyList) -> ();
+    fn set_children(&self, tag: u16, children: Vec<i32>) -> ();
     fn on_batch_complete(&self) -> ();
 }

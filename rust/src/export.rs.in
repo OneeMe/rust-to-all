@@ -84,13 +84,25 @@ foreign_class!(class PropertyMap {
 foreign_class!(class PropertyList {
     self_type PropertyList;
     private constructor = empty;
+    fn PropertyList::import_values(&self) -> Vec<PropertyValue>; alias importValues;
+    fn PropertyList::import_types(&self) -> Vec<PropertyType>; alias rawImportTypes;
+    foreign_code r#"
+    public PropertyType[] importTypes() {
+        int[] rawTypes = rawImportTypes();
+        PropertyType[] types = new PropertyType[rawTypes.length];
+        for (int i = 0;i < types.length;i++) {
+            types[i] = PropertyType.fromInt(rawTypes[i]);
+        }
+        return types;
+    }
+    "#;
 });
 
 foreign_callback!(
     callback UIManager {
         self_type UIManager;
         createView = create_view(&self, tag: u16, class_name: &str, root_view_tag: u16, properties: PropertyMap);
-        setChildren = set_children(&self, tag: u16, children: PropertyList);
+        setChildren = set_children(&self, tag: u16, children: Vec<i32>);
         onBatchComplete = on_batch_complete(&self);
     }
 );

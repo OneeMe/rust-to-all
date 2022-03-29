@@ -213,7 +213,7 @@ public class RustReadableMap implements ReadableMap {
             mKeys = Assertions.assertNotNull(importKeys());
         }
         final String[] iteratorKeys = mKeys;
-        final Object[] iteratorValues = Assertions.assertNotNull(importValues());
+        final PropertyValue[] iteratorValues = Assertions.assertNotNull(importValues());
         return new Iterator<Map.Entry<String, Object>>() {
             int currentIndex = 0;
 
@@ -233,7 +233,7 @@ public class RustReadableMap implements ReadableMap {
 
                     @Override
                     public Object getValue() {
-                        return iteratorValues[index];
+                        return iteratorValues[index].getValue();
                     }
 
                     @Override
