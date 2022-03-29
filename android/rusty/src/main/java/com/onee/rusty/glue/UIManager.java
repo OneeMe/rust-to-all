@@ -11,6 +11,12 @@ public interface UIManager {
     void setChildren(int tag, @NonNull int [] children);
 
 
+    void updateView(int tag, @NonNull String class_name, @NonNull CollectionMap properties);
+
+
+    void manageChildren(int tag, @NonNull int [] move_from, @NonNull int [] move_to, @NonNull int [] added_children, @NonNull int [] add_at_indices, @NonNull int [] remove_from);
+
+
     void onBatchComplete();
 
 }

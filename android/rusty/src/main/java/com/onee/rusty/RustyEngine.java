@@ -59,7 +59,6 @@ public class RustyEngine {
 
     public void run(ReactRootView rootView) {
         System.loadLibrary("rustlib");
-        uiManager.onHostResume();
         engine = new Engine(uiManager);
         engine.launch();
         int rootTag = uiManager.addRootView(rootView);

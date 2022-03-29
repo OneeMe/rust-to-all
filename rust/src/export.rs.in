@@ -101,8 +101,18 @@ foreign_class!(class CollectionList {
 foreign_callback!(
     callback UIManager {
         self_type UIManager;
-        createView = create_view(&self, tag: u16, class_name: &str, root_view_tag: u16, properties: CollectionMap);
-        setChildren = set_children(&self, tag: u16, children: Vec<i32>);
+        createView = create_view(&self, tag: i32, class_name: &str, root_view_tag: i32, properties: CollectionMap);
+        setChildren = set_children(&self, tag: i32, children: Vec<i32>);
+        updateView = update_view(&self, tag: i32, class_name: &str, properties: CollectionMap);
+        manageChildren = manage_children(
+            &self,
+            tag: i32,
+            move_from: Vec<i32>,
+            move_to: Vec<i32>,
+            added_children: Vec<i32>,
+            add_at_indices: Vec<i32>,
+            remove_from: Vec<i32>,
+        );
         onBatchComplete = on_batch_complete(&self);
     }
 );

@@ -20,6 +20,16 @@ public class RustHostUIManager extends UIManagerModule implements UIManager {
         super(reactContext, viewManagersList, minTimeLeftInFrameForNonBatchedOperationMs);
     }
 
+    private JavaOnlyArray toArray(int[] array) {
+        // TODO: RN 居然这里都要使用动态类型，后续得想办法改掉
+        List<Integer> intList = new ArrayList<Integer>(array.length);
+        for (int i : array)
+        {
+            intList.add(i);
+        }
+        return JavaOnlyArray.from(intList);
+    }
+
     @Override
     public void createView(int tag, @NonNull String class_name, int root_view_tag, @NonNull CollectionMap properties) {
         super.createView(tag, class_name, root_view_tag, RustReadableMap.of(properties));
@@ -27,12 +37,16 @@ public class RustHostUIManager extends UIManagerModule implements UIManager {
 
     @Override
     public void setChildren(int tag, @NonNull int[] children) {
-        // TODO: RN 居然这里都要使用动态类型，后续得想办法改掉
-        List<Integer> intList = new ArrayList<Integer>(children.length);
-        for (int i : children)
-        {
-            intList.add(i);
-        }
-        super.setChildren(tag, JavaOnlyArray.from(intList));
+        super.setChildren(tag,toArray(children) );
+    }
+
+    @Override
+    public void updateView(int tag, @NonNull String class_name, @NonNull CollectionMap properties) {
+        super.updateView(tag, class_name, RustReadableMap.of(properties));
+    }
+
+    @Override
+    public void manageChildren(int tag, @NonNull int[] move_from, @NonNull int[] move_to, @NonNull int[] added_children, @NonNull int[] add_at_indices, @NonNull int[] remove_from) {
+        super.manageChildren(tag, toArray(move_from), toArray(move_to), toArray(added_children), toArray(add_at_indices), toArray(remove_from));
     }
 }

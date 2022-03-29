@@ -45,11 +45,21 @@ impl Engine {
 pub trait UIManager {
     fn create_view(
         &self,
-        tag: u16,
+        tag: i32,
         class_name: &str,
-        root_view_tag: u16,
+        root_view_tag: i32,
         properties: CollectionMap,
     ) -> ();
-    fn set_children(&self, tag: u16, children: Vec<i32>) -> ();
+    fn set_children(&self, tag: i32, children: Vec<i32>) -> ();
+    fn update_view(&self, tag: i32, class_name: &str, properties: CollectionMap) -> ();
+    fn manage_children(
+        &self,
+        tag: i32,
+        move_from: Vec<i32>,
+        move_to: Vec<i32>,
+        added_children: Vec<i32>,
+        add_at_indices: Vec<i32>,
+        remove_from: Vec<i32>,
+    ) -> ();
     fn on_batch_complete(&self) -> ();
 }
