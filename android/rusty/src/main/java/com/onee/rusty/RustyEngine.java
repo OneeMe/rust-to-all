@@ -62,7 +62,6 @@ public class RustyEngine {
         engine = new Engine(uiManager);
         engine.launch();
         int rootTag = uiManager.addRootView(rootView);
-        uiManager.updateRootLayoutSpecs(rootTag, View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), 0, 0);
         Log.d(TAG, "root tag is " + rootTag);
         reactContext.runOnNativeModulesQueueThread(new Runnable() {
             @Override

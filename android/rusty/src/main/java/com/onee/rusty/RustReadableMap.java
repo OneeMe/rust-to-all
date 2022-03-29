@@ -209,41 +209,9 @@ public class RustReadableMap implements ReadableMap {
 
     @Override
     public @NonNull Iterator<Map.Entry<String, Object>> getEntryIterator() {
-        if (mKeys == null) {
-            mKeys = Assertions.assertNotNull(importKeys());
-        }
-        final String[] iteratorKeys = mKeys;
-        final CollectionValue[] iteratorValues = Assertions.assertNotNull(importValues());
-        return new Iterator<Map.Entry<String, Object>>() {
-            int currentIndex = 0;
-
-            @Override
-            public boolean hasNext() {
-                return currentIndex < iteratorKeys.length;
-            }
-
-            @Override
-            public Map.Entry<String, Object> next() {
-                final int index = currentIndex++;
-                return new Map.Entry<String, Object>() {
-                    @Override
-                    public String getKey() {
-                        return iteratorKeys[index];
-                    }
-
-                    @Override
-                    public Object getValue() {
-                        return iteratorValues[index].getValue();
-                    }
-
-                    @Override
-                    public Object setValue(Object value) {
-                        throw new UnsupportedOperationException(
-                                "Can't set a value while iterating over a ReadableNativeMap");
-                    }
-                };
-            }
-        };
+        // TODO: 在 RN 的原本视线中，这里是还继续调用 JNI 来获取内容的，不知道为什么
+        Map<String, Object> localMap =  getLocalMap();
+        return localMap.entrySet().iterator();
     }
 
     @Override

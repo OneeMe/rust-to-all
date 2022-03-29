@@ -1,5 +1,7 @@
 package com.onee.rusty;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.JavaOnlyArray;
@@ -15,9 +17,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RustHostUIManager extends UIManagerModule implements UIManager {
+public class RustHostUIManager extends UIManagerModule implements UIManager, RustRootView.RustRootViewDelegate {
     public RustHostUIManager(ReactApplicationContext reactContext, List<ViewManager> viewManagersList, int minTimeLeftInFrameForNonBatchedOperationMs) {
         super(reactContext, viewManagersList, minTimeLeftInFrameForNonBatchedOperationMs);
+    }
+
+    @Override
+    public <T extends View> int addRootView(T rootView) {
+        int tag = super.addRootView(rootView);
+        if (rootView instanceof RustRootView) {
+            ((RustRootView) rootView).setDelegate(this);
+            ((RustRootView) rootView).setRustRootViewTag(tag);
+        }
+        return tag;
     }
 
     private JavaOnlyArray toArray(int[] array) {
@@ -48,5 +60,10 @@ public class RustHostUIManager extends UIManagerModule implements UIManager {
     @Override
     public void manageChildren(int tag, @NonNull int[] move_from, @NonNull int[] move_to, @NonNull int[] added_children, @NonNull int[] add_at_indices, @NonNull int[] remove_from) {
         super.manageChildren(tag, toArray(move_from), toArray(move_to), toArray(added_children), toArray(add_at_indices), toArray(remove_from));
+    }
+
+    @Override
+    public void updateLayoutSpec(int tag, int widthMeasureSpec, int heightMeasureSpec) {
+        super.updateRootLayoutSpecs(tag, widthMeasureSpec, heightMeasureSpec, 0, 0);
     }
 }

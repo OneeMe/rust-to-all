@@ -9,7 +9,7 @@ import {
 
 class App extends Component {
   render() {
-    const items = Array(1).fill(0).map((_, index) => {
+    const items = Array(3000).fill(0).map((_, index) => {
       return (
         <View style={styles.item} key={index} />
       );

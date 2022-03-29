@@ -28,6 +28,7 @@ import com.facebook.react.views.text.ReactRawTextManager;
 import com.facebook.react.views.text.ReactTextViewManager;
 import com.facebook.react.views.view.ReactViewManager;
 import com.onee.rusty.RustCatalystInstance;
+import com.onee.rusty.RustRootView;
 import com.onee.rusty.RustyEngine;
 
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class RustHostActivity extends AppCompatActivity implements DefaultHardwa
     private void runRustCode(ViewGroup root) {
         RustyEngine engine = new RustyEngine(this);
 
-        ReactRootView reactRootView = new ReactRootView(this);
+        RustRootView reactRootView = new RustRootView(this);
         reactRootView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         reactRootView.setBackgroundColor(Color.GRAY);
         root.addView(reactRootView);
