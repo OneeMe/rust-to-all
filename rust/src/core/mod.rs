@@ -1,9 +1,9 @@
-pub mod property;
+pub mod collection;
 mod view;
 
 #[cfg(target_os = "android")]
 use super::platform::android::*;
-use property::*;
+use collection::*;
 use serde_json::json;
 
 pub struct Engine {
@@ -24,7 +24,7 @@ impl Engine {
             2,
             view::VIEW,
             1,
-            PropertyMap::new(
+            CollectionMap::new(
                 json!(
                     {
                         "width": 100,
@@ -48,7 +48,7 @@ pub trait UIManager {
         tag: u16,
         class_name: &str,
         root_view_tag: u16,
-        properties: PropertyMap,
+        properties: CollectionMap,
     ) -> ();
     fn set_children(&self, tag: u16, children: Vec<i32>) -> ();
     fn on_batch_complete(&self) -> ();

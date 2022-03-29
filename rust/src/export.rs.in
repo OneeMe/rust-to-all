@@ -1,44 +1,44 @@
 use jni::sys::*;
 
-use crate::core::property::*;
+use crate::core::collection::*;
 use crate::core::*;
 
 foreign_enum!(
-    enum PropertyType {
-        Null = PropertyType::Null,
-        Boolean = PropertyType::Boolean,
-        Number = PropertyType::Number,
-        String = PropertyType::String,
-        Map = PropertyType::Map,
-        Array = PropertyType::Array,
+    enum ValueType {
+        Null = ValueType::Null,
+        Boolean = ValueType::Boolean,
+        Number = ValueType::Number,
+        String = ValueType::String,
+        Map = ValueType::Map,
+        Array = ValueType::Array,
     }
 );
 
 foreign_typemap!(
-    ($p:r_type) Vec<PropertyType> => Vec<i32> {
+    ($p:r_type) Vec<ValueType> => Vec<i32> {
         $out = $p.iter().map(|ele| ele.to_owned() as i32).collect();
     };
 );
 
-foreign_class!(class PropertyValue {
-    self_type PropertyValue;
+foreign_class!(class CollectionValue {
+    self_type CollectionValue;
     private constructor = empty;
-    fn PropertyVale::property_type(&self) -> PropertyType {
+    fn PropertyVale::property_type(&self) -> ValueType {
         this.property_type.clone()
     }
-    fn PropertyValue::as_bool(&self) -> bool {
+    fn CollectionValue::as_bool(&self) -> bool {
         this.value.as_bool().unwrap()
     }
-    fn PropertyValue::as_string(&self) -> String {
+    fn CollectionValue::as_string(&self) -> String {
         this.value.as_str().unwrap().to_owned()
     }
-    fn PropertyValue::as_map(&self) -> PropertyMap {
-        PropertyMap::new(this.value.as_object().unwrap().clone())
+    fn CollectionValue::as_map(&self) -> CollectionMap {
+        CollectionMap::new(this.value.as_object().unwrap().clone())
     }
-    fn PropertyValue::as_array(&self) -> PropertyList {
-        PropertyList::new(this.value.as_array().unwrap().clone())
+    fn CollectionValue::as_array(&self) -> CollectionList {
+        CollectionList::new(this.value.as_array().unwrap().clone())
     }
-    fn PropertyValue::as_number(&self) -> f64 {
+    fn CollectionValue::as_number(&self) -> f64 {
         this.value.as_f64().unwrap()
     }
     foreign_code r#"
@@ -63,35 +63,35 @@ foreign_class!(class PropertyValue {
     "#;
 });
 
-foreign_class!(class PropertyMap {
-    self_type PropertyMap;
+foreign_class!(class CollectionMap {
+    self_type CollectionMap;
     private constructor = empty;
-    fn PropertyMap::import_keys(&self) -> Vec<String>; alias importKeys;
-    fn PropertyMap::import_values(&self) -> Vec<PropertyValue>; alias importValues;
-    fn PropertyMap::import_types(&self) -> Vec<PropertyType>; alias rawImportTypes;
+    fn CollectionMap::import_keys(&self) -> Vec<String>; alias importKeys;
+    fn CollectionMap::import_values(&self) -> Vec<CollectionValue>; alias importValues;
+    fn CollectionMap::import_types(&self) -> Vec<ValueType>; alias rawImportTypes;
     foreign_code r#"
-    public PropertyType[] importTypes() {
+    public ValueType[] importTypes() {
         int[] rawTypes = rawImportTypes();
-        PropertyType[] types = new PropertyType[rawTypes.length];
+        ValueType[] types = new ValueType[rawTypes.length];
         for (int i = 0;i < types.length;i++) {
-            types[i] = PropertyType.fromInt(rawTypes[i]);
+            types[i] = ValueType.fromInt(rawTypes[i]);
         }
         return types;
     }
     "#;
 });
 
-foreign_class!(class PropertyList {
-    self_type PropertyList;
+foreign_class!(class CollectionList {
+    self_type CollectionList;
     private constructor = empty;
-    fn PropertyList::import_values(&self) -> Vec<PropertyValue>; alias importValues;
-    fn PropertyList::import_types(&self) -> Vec<PropertyType>; alias rawImportTypes;
+    fn CollectionList::import_values(&self) -> Vec<CollectionValue>; alias importValues;
+    fn CollectionList::import_types(&self) -> Vec<ValueType>; alias rawImportTypes;
     foreign_code r#"
-    public PropertyType[] importTypes() {
+    public ValueType[] importTypes() {
         int[] rawTypes = rawImportTypes();
-        PropertyType[] types = new PropertyType[rawTypes.length];
+        ValueType[] types = new ValueType[rawTypes.length];
         for (int i = 0;i < types.length;i++) {
-            types[i] = PropertyType.fromInt(rawTypes[i]);
+            types[i] = ValueType.fromInt(rawTypes[i]);
         }
         return types;
     }
@@ -101,7 +101,7 @@ foreign_class!(class PropertyList {
 foreign_callback!(
     callback UIManager {
         self_type UIManager;
-        createView = create_view(&self, tag: u16, class_name: &str, root_view_tag: u16, properties: PropertyMap);
+        createView = create_view(&self, tag: u16, class_name: &str, root_view_tag: u16, properties: CollectionMap);
         setChildren = set_children(&self, tag: u16, children: Vec<i32>);
         onBatchComplete = on_batch_complete(&self);
     }

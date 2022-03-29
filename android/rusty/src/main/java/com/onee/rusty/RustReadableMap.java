@@ -12,26 +12,26 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.UnexpectedNativeTypeException;
-import com.onee.rusty.glue.PropertyMap;
-import com.onee.rusty.glue.PropertyType;
-import com.onee.rusty.glue.PropertyValue;
+import com.onee.rusty.glue.CollectionMap;
+import com.onee.rusty.glue.CollectionValue;
+import com.onee.rusty.glue.ValueType;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 // Fork From com.facebook.react.bridge.ReadableNativeMap
 public class RustReadableMap implements ReadableMap {
-    private final PropertyMap mPropertyMap;
+    private final CollectionMap collectionMap;
     private @Nullable String[] mKeys;
     private @Nullable HashMap<String, Object> mLocalMap;
-    private @Nullable HashMap<String, PropertyType> mLocalTypeMap;
+    private @Nullable HashMap<String, ValueType> mLocalTypeMap;
     private static int mJniCallCounter;
 
-    private RustReadableMap(PropertyMap mPropertyMap) {
-        this.mPropertyMap = mPropertyMap;
+    private RustReadableMap(CollectionMap mPropertyMap) {
+        this.collectionMap = mPropertyMap;
     }
 
-    public static RustReadableMap of(PropertyMap propertyMap) {
+    public static RustReadableMap of(CollectionMap propertyMap) {
         return new RustReadableMap(propertyMap);
     }
 
@@ -49,7 +49,7 @@ public class RustReadableMap implements ReadableMap {
                 mJniCallCounter++;
             }
             if (mLocalMap == null) {
-                PropertyValue[] values = Assertions.assertNotNull(importValues());
+                CollectionValue[] values = Assertions.assertNotNull(importValues());
                 mJniCallCounter++;
                 int length = mKeys.length;
                 mLocalMap = new HashMap<>(length);
@@ -62,14 +62,14 @@ public class RustReadableMap implements ReadableMap {
     }
 
     private String[] importKeys() {
-        return mPropertyMap.importKeys();
+        return collectionMap.importKeys();
     }
 
-    private PropertyValue[] importValues() {
-    return mPropertyMap.importValues();
+    private CollectionValue[] importValues() {
+    return collectionMap.importValues();
     }
 
-    private @NonNull HashMap<String, PropertyType> getLocalTypeMap() {
+    private @NonNull HashMap<String, ValueType> getLocalTypeMap() {
         if (mLocalTypeMap != null) {
             return mLocalTypeMap;
         }
@@ -80,7 +80,7 @@ public class RustReadableMap implements ReadableMap {
             }
             // check that no other thread has already updated
             if (mLocalTypeMap == null) {
-                PropertyType[] types = Assertions.assertNotNull(importTypes());
+                ValueType[] types = Assertions.assertNotNull(importTypes());
                 mJniCallCounter++;
                 int length = mKeys.length;
                 mLocalTypeMap = new HashMap<>(length);
@@ -92,8 +92,8 @@ public class RustReadableMap implements ReadableMap {
         return mLocalTypeMap;
     }
 
-    private PropertyType[] importTypes() {
-        return mPropertyMap.importTypes();
+    private ValueType[] importTypes() {
+        return collectionMap.importTypes();
     }
 
     @Override
@@ -181,7 +181,7 @@ public class RustReadableMap implements ReadableMap {
     @Override
     public @NonNull ReadableType getType(@NonNull String name) {
         if (getLocalTypeMap().containsKey(name)) {
-            PropertyType type = Assertions.assertNotNull(getLocalTypeMap().get(name));
+            ValueType type = Assertions.assertNotNull(getLocalTypeMap().get(name));
             switch (type) {
                 case Null:
                     return ReadableType.Null;
@@ -213,7 +213,7 @@ public class RustReadableMap implements ReadableMap {
             mKeys = Assertions.assertNotNull(importKeys());
         }
         final String[] iteratorKeys = mKeys;
-        final PropertyValue[] iteratorValues = Assertions.assertNotNull(importValues());
+        final CollectionValue[] iteratorValues = Assertions.assertNotNull(importValues());
         return new Iterator<Map.Entry<String, Object>>() {
             int currentIndex = 0;
 

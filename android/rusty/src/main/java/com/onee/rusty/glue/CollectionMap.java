@@ -2,16 +2,23 @@
 package com.onee.rusty.glue;
 import androidx.annotation.NonNull;
 
-public final class PropertyList {
+public final class CollectionMap {
 
-    private PropertyList() {}
+    private CollectionMap() {}
 
-    public final @NonNull PropertyValue [] importValues() {
-        PropertyValue [] ret = do_importValues(mNativeObj);
+    public final @NonNull java.lang.String [] importKeys() {
+        java.lang.String [] ret = do_importKeys(mNativeObj);
 
         return ret;
     }
-    private static native @NonNull PropertyValue [] do_importValues(long self);
+    private static native @NonNull java.lang.String [] do_importKeys(long self);
+
+    public final @NonNull CollectionValue [] importValues() {
+        CollectionValue [] ret = do_importValues(mNativeObj);
+
+        return ret;
+    }
+    private static native @NonNull CollectionValue [] do_importValues(long self);
 
     public final int [] rawImportTypes() {
         int [] ret = do_rawImportTypes(mNativeObj);
@@ -36,17 +43,17 @@ public final class PropertyList {
         }
     }
     private static native void do_delete(long me);
-    /*package*/ PropertyList(InternalPointerMarker marker, long ptr) {
+    /*package*/ CollectionMap(InternalPointerMarker marker, long ptr) {
         assert marker == InternalPointerMarker.RAW_PTR;
         this.mNativeObj = ptr;
     }
     /*package*/ long mNativeObj;
 
-    public PropertyType[] importTypes() {
+    public ValueType[] importTypes() {
         int[] rawTypes = rawImportTypes();
-        PropertyType[] types = new PropertyType[rawTypes.length];
+        ValueType[] types = new ValueType[rawTypes.length];
         for (int i = 0;i < types.length;i++) {
-            types[i] = PropertyType.fromInt(rawTypes[i]);
+            types[i] = ValueType.fromInt(rawTypes[i]);
         }
         return types;
     }

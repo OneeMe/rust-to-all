@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 public interface UIManager {
 
 
-    void createView(int tag, @NonNull String class_name, int root_view_tag, @NonNull PropertyMap properties);
+    void createView(int tag, @NonNull String class_name, int root_view_tag, @NonNull CollectionMap properties);
 
 
     void setChildren(int tag, @NonNull int [] children);

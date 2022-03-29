@@ -7,8 +7,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.uimanager.ViewManagerResolver;
-import com.onee.rusty.glue.PropertyList;
-import com.onee.rusty.glue.PropertyMap;
+import com.onee.rusty.glue.CollectionMap;
 import com.onee.rusty.glue.UIManager;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public class RustHostUIManager extends UIManagerModule implements UIManager {
     }
 
     @Override
-    public void createView(int tag, @NonNull String class_name, int root_view_tag, @NonNull PropertyMap properties) {
+    public void createView(int tag, @NonNull String class_name, int root_view_tag, @NonNull CollectionMap properties) {
         super.createView(tag, class_name, root_view_tag, RustReadableMap.of(properties));
     }
 

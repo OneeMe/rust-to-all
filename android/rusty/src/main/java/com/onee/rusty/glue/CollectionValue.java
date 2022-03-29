@@ -2,13 +2,13 @@
 package com.onee.rusty.glue;
 import androidx.annotation.NonNull;
 
-public final class PropertyValue {
+public final class CollectionValue {
 
-    private PropertyValue() {}
+    private CollectionValue() {}
 
-    public final PropertyType property_type() {
+    public final ValueType property_type() {
         int ret = do_property_type(mNativeObj);
-        PropertyType convRet = PropertyType.fromInt(ret);
+        ValueType convRet = ValueType.fromInt(ret);
 
         return convRet;
     }
@@ -28,17 +28,17 @@ public final class PropertyValue {
     }
     private static native @NonNull String do_as_string(long self);
 
-    public final @NonNull PropertyMap as_map() {
+    public final @NonNull CollectionMap as_map() {
         long ret = do_as_map(mNativeObj);
-        PropertyMap convRet = new PropertyMap(InternalPointerMarker.RAW_PTR, ret);
+        CollectionMap convRet = new CollectionMap(InternalPointerMarker.RAW_PTR, ret);
 
         return convRet;
     }
     private static native long do_as_map(long self);
 
-    public final @NonNull PropertyList as_array() {
+    public final @NonNull CollectionList as_array() {
         long ret = do_as_array(mNativeObj);
-        PropertyList convRet = new PropertyList(InternalPointerMarker.RAW_PTR, ret);
+        CollectionList convRet = new CollectionList(InternalPointerMarker.RAW_PTR, ret);
 
         return convRet;
     }
@@ -67,7 +67,7 @@ public final class PropertyValue {
         }
     }
     private static native void do_delete(long me);
-    /*package*/ PropertyValue(InternalPointerMarker marker, long ptr) {
+    /*package*/ CollectionValue(InternalPointerMarker marker, long ptr) {
         assert marker == InternalPointerMarker.RAW_PTR;
         this.mNativeObj = ptr;
     }

@@ -56,7 +56,7 @@ public class RustHostActivity extends AppCompatActivity implements DefaultHardwa
 
     private void runRustCode(ViewGroup root) {
         RustyEngine engine = new RustyEngine(this);
-        
+
         ReactRootView reactRootView = new ReactRootView(this);
         reactRootView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         reactRootView.setBackgroundColor(Color.GRAY);

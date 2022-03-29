@@ -2,7 +2,7 @@
 package com.onee.rusty.glue;
 
 
-public enum PropertyType {
+public enum ValueType {
     Null(0),
     Boolean(1),
     Number(2),
@@ -11,11 +11,11 @@ public enum PropertyType {
     Array(5);
 
     private final int value;
-    PropertyType(int value) {
+    ValueType(int value) {
         this.value = value;
     }
     public final int getValue() { return value; }
-    /*package*/ static PropertyType fromInt(int x) {
+    /*package*/ static ValueType fromInt(int x) {
         switch (x) {
             case 0: return Null;
             case 1: return Boolean;
@@ -23,7 +23,7 @@ public enum PropertyType {
             case 3: return String;
             case 4: return Map;
             case 5: return Array;
-            default: throw new Error("Invalid value for enum PropertyType: " + x);
+            default: throw new Error("Invalid value for enum ValueType: " + x);
         }
     }
 }
