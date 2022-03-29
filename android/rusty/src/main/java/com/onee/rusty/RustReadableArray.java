@@ -6,21 +6,20 @@ import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.bridge.Dynamic;
 import com.facebook.react.bridge.DynamicFromArray;
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
-import com.onee.rusty.glue.PropertyList;
-import com.onee.rusty.glue.PropertyType;
-import com.onee.rusty.glue.PropertyValue;
+import com.onee.rusty.glue.CollectionList;
+import com.onee.rusty.glue.CollectionValue;
+import com.onee.rusty.glue.ValueType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class RustReadableArray implements ReadableArray {
-    final private PropertyList mPropertyList;
-    RustReadableArray(PropertyList propertyList) {
-        mPropertyList = propertyList;
+    final private CollectionList collectionList;
+    RustReadableArray(CollectionList propertyList) {
+        collectionList = propertyList;
     }
-    public static RustReadableArray of (PropertyList propertyList) {
+    public static RustReadableArray of (CollectionList propertyList) {
         return new RustReadableArray(propertyList);
     }
 
@@ -42,7 +41,7 @@ public class RustReadableArray implements ReadableArray {
             // Make sure no concurrent call already updated
             if (mLocalArray == null) {
                 jniPassCounter++;
-                PropertyValue[] values = Assertions.assertNotNull(importArray());
+                CollectionValue[] values = Assertions.assertNotNull(importArray());
                 mLocalArray = new Object[values.length];
                 for (int i = 0; i < values.length; i++) {
                     mLocalArray[i] = values[i].getValue();
@@ -52,8 +51,8 @@ public class RustReadableArray implements ReadableArray {
         return mLocalArray;
     }
 
-    private PropertyValue[] importArray() {
-        return mPropertyList.importValues();
+    private CollectionValue[] importArray() {
+        return collectionList.importValues();
     }
 
     private ReadableType[] getLocalTypeArray() {
@@ -64,15 +63,15 @@ public class RustReadableArray implements ReadableArray {
             // Make sure no concurrent call already updated
             if (mLocalTypeArray == null) {
                 jniPassCounter++;
-                PropertyType[] tempArray = Assertions.assertNotNull(importTypeArray());
+                ValueType[] tempArray = Assertions.assertNotNull(importTypeArray());
                 mLocalTypeArray = Arrays.copyOf(tempArray, tempArray.length, ReadableType[].class);
             }
         }
         return mLocalTypeArray;
     }
 
-    private PropertyType[] importTypeArray() {
-        return mPropertyList.importTypes();
+    private ValueType[] importTypeArray() {
+        return collectionList.importTypes();
     }
 
     @Override
