@@ -2,10 +2,10 @@ use crate::core::property::*;
 use std::time::Instant;
 
 pub trait FromRustToJavaBench {
-    fn call_use_flapigen(&self, args: ViewProperty);
-    fn call_use_json(&self, args: String);
-    fn call_use_bson(&self, args: Vec<u8>);
-    fn call_use_flexbuffer(&self, args: Vec<u8>);
+    fn call_empty(&self);
+    fn call_use_flapigen(&self, args: ViewProperty, read: bool);
+    fn call_use_json(&self, args: String, read: bool);
+    fn call_use_flexbuffer(&self, args: Vec<u8>, read: bool);
 }
 
 pub fn bench_call<F>(count: i32, name: &str, block: F)

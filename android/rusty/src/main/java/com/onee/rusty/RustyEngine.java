@@ -61,13 +61,15 @@ public class RustyEngine {
         System.loadLibrary("rustlib");
         engine = new Engine(uiManager);
         engine.launch();
-        int rootTag = uiManager.addRootView(rootView);
-        Log.d(TAG, "root tag is " + rootTag);
-        reactContext.runOnNativeModulesQueueThread(new Runnable() {
-            @Override
-            public void run() {
-                engine.runApp(0);
-            }
-        });
+        Bench bench = new Bench();
+        engine.run_bench(bench);
+//        int rootTag = uiManager.addRootView(rootView);
+//        Log.d(TAG, "root tag is " + rootTag);
+//        reactContext.runOnNativeModulesQueueThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                engine.runApp(0);
+//            }
+//        });
     }
 }

@@ -1,3 +1,4 @@
+mod buffer;
 pub mod collection;
 pub mod property;
 mod view;
@@ -6,15 +7,18 @@ use std::vec;
 
 use crate::bench::*;
 
+use self::buffer::com::onee::rusty::model::Display as BufferDisplay;
+use self::buffer::com::onee::rusty::model::FlexDirection as BufferFlexDirection;
+use self::buffer::com::onee::rusty::model::FlexWrap as BufferFlexWrap;
+use self::buffer::com::onee::rusty::model::ViewProperty as BufferViewProperty;
+use self::buffer::com::onee::rusty::model::ViewPropertyArgs;
 use self::property::*;
 
 #[cfg(target_os = "android")]
 use super::platform::android::*;
 
 use collection::*;
-use serde::Serialize;
 use serde_json::json;
-use std::time::Instant;
 
 pub struct Engine {
     manager: Box<dyn UIManager>,
@@ -40,19 +44,48 @@ impl Engine {
             display: Display::flex,
             flex_direction: FlexDirection::column,
             background_color: -1,
-            flex_wrap: todo!(),
+            flex_wrap: FlexWrap::nowrap,
         };
-        bench_call(3000, &"flapigen", move || {
-            bench.call_use_flapigen(view_property);
+        let mut builder = flatbuffers::FlatBufferBuilder::with_capacity(1024);
+        let buffer_view_property = BufferViewProperty::create(
+            &mut builder,
+            &ViewPropertyArgs {
+                width: 100.0,
+                height: 100.0,
+                margin_left: 10.0,
+                margin_right: 10.0,
+                margin_top: 10.0,
+                margin_bottom: 10.0,
+                flex: 1,
+                display: BufferDisplay::flex,
+                flex_direction: BufferFlexDirection::column,
+                background_color: -1,
+                flex_wrap: BufferFlexWrap::nowrap,
+            },
+        );
+        builder.finish(buffer_view_property, None);
+        let mut s = flexbuffers::FlexbufferSerializer::new();
+        let view_property_clone = view_property.clone();
+        bench_call(3000, &"empty", || {
+            bench.call_empty();
         });
-        bench_call(3000, &"json", move || {
-            bench.call_use_json(serde_json::to_string(&view_property).unwrap());
+        bench_call(3000, &"json-no-read", || {
+            bench.call_use_json(serde_json::to_string(&view_property).unwrap(), false);
         });
-        bench_call(3000, &"bson", move || {
-            bench.call_use_bson(bson::to_vec(&view_property).unwrap());
+        bench_call(3000, &"json-read", || {
+            bench.call_use_json(serde_json::to_string(&view_property).unwrap(), true);
         });
-        bench_call(3000, &"flexbuffers", move || {
-            bench.call_use_flexbuffer(flexbuffers::to_vec(&view_property).unwrap());
+        bench_call(3000, &"flexbuffers-no-read", || {
+            bench.call_use_flexbuffer(builder.finished_data().to_vec(), false);
+        });
+        bench_call(3000, &"flexbuffers-read", || {
+            bench.call_use_flexbuffer(builder.finished_data().to_vec(), true);
+        });
+        bench_call(3000, &"flapigen-no-read", || {
+            bench.call_use_flapigen(view_property, false);
+        });
+        bench_call(3000, &"flapigen-read", || {
+            bench.call_use_flapigen(view_property_clone, true);
         });
     }
     pub fn run_app(&self, app_id: i32) -> () {

@@ -209,10 +209,10 @@ foreign_typemap!(
 
 foreign_callback!(callback FromRustToJavaBench {
     self_type FromRustToJavaBench;
-    callUseFlapigen = call_use_flapigen(&self, args: ViewProperty);
-    callUseJson = call_use_json(&self, args: String);
-    callUseBson = call_use_bson(&self, args: Vec<u8>);
-    callUseFlexbuffer = call_use_flexbuffer(&self, args: Vec<u8>);
+    callEmpty = call_empty(&self);
+    callUseFlapigen = call_use_flapigen(&self, args: ViewProperty, read: bool);
+    callUseJson = call_use_json(&self, args: String, read: bool);
+    callUseFlexbuffer = call_use_flexbuffer(&self, args: Vec<u8>, read: bool);
 });
 
 foreign_class!(class Engine {

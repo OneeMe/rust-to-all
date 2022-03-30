@@ -5,15 +5,15 @@ import androidx.annotation.NonNull;
 public interface FromRustToJavaBench {
 
 
-    void callUseFlapigen(@NonNull ViewProperty args);
+    void callEmpty();
 
 
-    void callUseJson(@NonNull String args);
+    void callUseFlapigen(@NonNull ViewProperty args, boolean read);
 
 
-    void callUseBson(@NonNull byte [] args);
+    void callUseJson(@NonNull String args, boolean read);
 
 
-    void callUseFlexbuffer(@NonNull byte [] args);
+    void callUseFlexbuffer(@NonNull byte [] args, boolean read);
 
 }
