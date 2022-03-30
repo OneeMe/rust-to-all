@@ -13,4 +13,7 @@ public interface FromRustToJavaBench {
 
     void callUseBson(@NonNull byte [] args);
 
+
+    void callUseFlexbuffer(@NonNull byte [] args);
+
 }

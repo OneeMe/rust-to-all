@@ -212,6 +212,7 @@ foreign_callback!(callback FromRustToJavaBench {
     callUseFlapigen = call_use_flapigen(&self, args: ViewProperty);
     callUseJson = call_use_json(&self, args: String);
     callUseBson = call_use_bson(&self, args: Vec<u8>);
+    callUseFlexbuffer = call_use_flexbuffer(&self, args: Vec<u8>);
 });
 
 foreign_class!(class Engine {

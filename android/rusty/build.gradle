@@ -31,6 +31,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation "com.facebook.react:react-native:+"
+    implementation group: 'org.mongodb', name: 'bson', version: '4.5.1'
+
 }
 
 cargoNdk {

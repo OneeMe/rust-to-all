@@ -1,0 +1,36 @@
+namespace com.onee.rusty.model;
+
+enum Display: int {
+    flex,
+    none,
+}
+
+
+enum FlexDirection: int {
+    column,
+    column_reverse,
+    row,
+    row_reverse,
+}
+
+
+enum FlexWrap: int {
+    nowrap,
+    wrap,
+}
+
+table ViewProperty {
+  width: double;
+  height: double;
+  margin_left: double;
+  margin_right: double;
+  margin_top: double;
+  margin_bottom: double;
+  flex: int;
+  display: Display;
+  flex_direction: FlexDirection;
+  background_color: int;
+  flex_wrap: FlexWrap;
+}
+
+root_type ViewProperty;

@@ -12,6 +12,7 @@ use self::property::*;
 use super::platform::android::*;
 
 use collection::*;
+use serde::Serialize;
 use serde_json::json;
 use std::time::Instant;
 
@@ -49,6 +50,9 @@ impl Engine {
         });
         bench_call(3000, &"bson", move || {
             bench.call_use_bson(bson::to_vec(&view_property).unwrap());
+        });
+        bench_call(3000, &"flexbuffers", move || {
+            bench.call_use_flexbuffer(flexbuffers::to_vec(&view_property).unwrap());
         });
     }
     pub fn run_app(&self, app_id: i32) -> () {
