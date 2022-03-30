@@ -14,6 +14,11 @@ public final class Engine {
     }
     private static native void do_launch(long self);
 
+    public final void run_bench(@NonNull FromRustToJavaBench bench) {
+        do_run_bench(mNativeObj, bench);
+    }
+    private static native void do_run_bench(long self, FromRustToJavaBench bench);
+
     public final void runApp(int a0) {
         do_runApp(mNativeObj, a0);
     }

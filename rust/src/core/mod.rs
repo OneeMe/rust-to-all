@@ -1,12 +1,19 @@
 pub mod collection;
+pub mod property;
 mod view;
 
 use std::vec;
 
+use crate::bench::*;
+
+use self::property::*;
+
 #[cfg(target_os = "android")]
 use super::platform::android::*;
+
 use collection::*;
 use serde_json::json;
+use std::time::Instant;
 
 pub struct Engine {
     manager: Box<dyn UIManager>,
@@ -19,6 +26,30 @@ impl Engine {
     pub fn launch(&self) -> () {
         init_log();
         info!("launched");
+    }
+    pub fn run_bench(&self, bench: Box<dyn FromRustToJavaBench>) -> () {
+        let view_property = ViewProperty {
+            width: 100.0,
+            height: 100.0,
+            margin_left: 10.0,
+            margin_right: 10.0,
+            margin_top: 10.0,
+            margin_bottom: 10.0,
+            flex: 1,
+            display: Display::flex,
+            flex_direction: FlexDirection::column,
+            background_color: -1,
+            flex_wrap: todo!(),
+        };
+        bench_call(3000, &"flapigen", move || {
+            bench.call_use_flapigen(view_property);
+        });
+        bench_call(3000, &"json", move || {
+            bench.call_use_json(serde_json::to_string(&view_property).unwrap());
+        });
+        bench_call(3000, &"bson", move || {
+            bench.call_use_bson(bson::to_vec(&view_property).unwrap());
+        });
     }
     pub fn run_app(&self, app_id: i32) -> () {
         info!("app id is {}", app_id);
