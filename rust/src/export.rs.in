@@ -178,6 +178,54 @@ foreign_class!(class ViewProperty {
     fn ViewProperty::flexWrap(&self) -> FlexWrap {
         this.flex_wrap.clone()
     }
+    fn ViewProperty::content(&self) -> String {
+        this.content.clone()
+    }
+    fn ViewProperty::a(&self) -> String {
+        this.a.clone()
+    }
+    fn ViewProperty::b(&self) -> String {
+        this.b.clone()
+    }
+    fn ViewProperty::c(&self) -> String {
+        this.c.clone()
+    }
+    fn ViewProperty::d(&self) -> String {
+        this.d.clone()
+    }
+    fn ViewProperty::e(&self) -> String {
+        this.e.clone()
+    }
+    fn ViewProperty::f(&self) -> String {
+        this.f.clone()
+    }
+    fn ViewProperty::g(&self) -> String {
+        this.g.clone()
+    }
+    fn ViewProperty::h(&self) -> String {
+        this.h.clone()
+    }
+    fn ViewProperty::i(&self) -> String {
+        this.i.clone()
+    }
+    fn ViewProperty::j(&self) -> String {
+        this.j.clone()
+    }
+    fn ViewProperty::k(&self) -> String {
+        this.k.clone()
+    }
+    fn ViewProperty::l(&self) -> String {
+        this.l.clone()
+    }
+    fn ViewProperty::m(&self) -> String {
+        this.m.clone()
+    }
+    fn ViewProperty::n(&self) -> String {
+        this.n.clone()
+    }
+    fn ViewProperty::o(&self) -> String {
+        this.o.clone()
+    }
 });
 
 // From https://github.com/Dushistov/flapigen-rs/issues/143#issuecomment-664131615

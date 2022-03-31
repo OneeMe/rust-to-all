@@ -26,6 +26,54 @@ public final class ViewProperty extends Table {
   public int flexDirection() { int o = __offset(20); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
   public int backgroundColor() { int o = __offset(22); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
   public int flexWrap() { int o = __offset(24); return o != 0 ? bb.getInt(o + bb_pos) : 0; }
+  public String content() { int o = __offset(26); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer contentAsByteBuffer() { return __vector_as_bytebuffer(26, 1); }
+  public ByteBuffer contentInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 26, 1); }
+  public String a() { int o = __offset(28); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer aAsByteBuffer() { return __vector_as_bytebuffer(28, 1); }
+  public ByteBuffer aInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 28, 1); }
+  public String b() { int o = __offset(30); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer bAsByteBuffer() { return __vector_as_bytebuffer(30, 1); }
+  public ByteBuffer bInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 30, 1); }
+  public String c() { int o = __offset(32); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer cAsByteBuffer() { return __vector_as_bytebuffer(32, 1); }
+  public ByteBuffer cInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 32, 1); }
+  public String d() { int o = __offset(34); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer dAsByteBuffer() { return __vector_as_bytebuffer(34, 1); }
+  public ByteBuffer dInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 34, 1); }
+  public String e() { int o = __offset(36); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer eAsByteBuffer() { return __vector_as_bytebuffer(36, 1); }
+  public ByteBuffer eInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 36, 1); }
+  public String f() { int o = __offset(38); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer fAsByteBuffer() { return __vector_as_bytebuffer(38, 1); }
+  public ByteBuffer fInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 38, 1); }
+  public String g() { int o = __offset(40); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer gAsByteBuffer() { return __vector_as_bytebuffer(40, 1); }
+  public ByteBuffer gInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 40, 1); }
+  public String h() { int o = __offset(42); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer hAsByteBuffer() { return __vector_as_bytebuffer(42, 1); }
+  public ByteBuffer hInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 42, 1); }
+  public String i() { int o = __offset(44); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer iAsByteBuffer() { return __vector_as_bytebuffer(44, 1); }
+  public ByteBuffer iInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 44, 1); }
+  public String j() { int o = __offset(46); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer jAsByteBuffer() { return __vector_as_bytebuffer(46, 1); }
+  public ByteBuffer jInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 46, 1); }
+  public String k() { int o = __offset(48); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer kAsByteBuffer() { return __vector_as_bytebuffer(48, 1); }
+  public ByteBuffer kInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 48, 1); }
+  public String l() { int o = __offset(50); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer lAsByteBuffer() { return __vector_as_bytebuffer(50, 1); }
+  public ByteBuffer lInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 50, 1); }
+  public String m() { int o = __offset(52); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer mAsByteBuffer() { return __vector_as_bytebuffer(52, 1); }
+  public ByteBuffer mInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 52, 1); }
+  public String n() { int o = __offset(54); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer nAsByteBuffer() { return __vector_as_bytebuffer(54, 1); }
+  public ByteBuffer nInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 54, 1); }
+  public String o() { int o = __offset(56); return o != 0 ? __string(o + bb_pos) : null; }
+  public ByteBuffer oAsByteBuffer() { return __vector_as_bytebuffer(56, 1); }
+  public ByteBuffer oInByteBuffer(ByteBuffer _bb) { return __vector_in_bytebuffer(_bb, 56, 1); }
 
   public static int createViewProperty(FlatBufferBuilder builder,
       double width,
@@ -38,14 +86,46 @@ public final class ViewProperty extends Table {
       int display,
       int flexDirection,
       int backgroundColor,
-      int flexWrap) {
-    builder.startTable(11);
+      int flexWrap,
+      int contentOffset,
+      int aOffset,
+      int bOffset,
+      int cOffset,
+      int dOffset,
+      int eOffset,
+      int fOffset,
+      int gOffset,
+      int hOffset,
+      int iOffset,
+      int jOffset,
+      int kOffset,
+      int lOffset,
+      int mOffset,
+      int nOffset,
+      int oOffset) {
+    builder.startTable(27);
     ViewProperty.addMarginBottom(builder, marginBottom);
     ViewProperty.addMarginTop(builder, marginTop);
     ViewProperty.addMarginRight(builder, marginRight);
     ViewProperty.addMarginLeft(builder, marginLeft);
     ViewProperty.addHeight(builder, height);
     ViewProperty.addWidth(builder, width);
+    ViewProperty.addO(builder, oOffset);
+    ViewProperty.addN(builder, nOffset);
+    ViewProperty.addM(builder, mOffset);
+    ViewProperty.addL(builder, lOffset);
+    ViewProperty.addK(builder, kOffset);
+    ViewProperty.addJ(builder, jOffset);
+    ViewProperty.addI(builder, iOffset);
+    ViewProperty.addH(builder, hOffset);
+    ViewProperty.addG(builder, gOffset);
+    ViewProperty.addF(builder, fOffset);
+    ViewProperty.addE(builder, eOffset);
+    ViewProperty.addD(builder, dOffset);
+    ViewProperty.addC(builder, cOffset);
+    ViewProperty.addB(builder, bOffset);
+    ViewProperty.addA(builder, aOffset);
+    ViewProperty.addContent(builder, contentOffset);
     ViewProperty.addFlexWrap(builder, flexWrap);
     ViewProperty.addBackgroundColor(builder, backgroundColor);
     ViewProperty.addFlexDirection(builder, flexDirection);
@@ -54,7 +134,7 @@ public final class ViewProperty extends Table {
     return ViewProperty.endViewProperty(builder);
   }
 
-  public static void startViewProperty(FlatBufferBuilder builder) { builder.startTable(11); }
+  public static void startViewProperty(FlatBufferBuilder builder) { builder.startTable(27); }
   public static void addWidth(FlatBufferBuilder builder, double width) { builder.addDouble(0, width, 0.0); }
   public static void addHeight(FlatBufferBuilder builder, double height) { builder.addDouble(1, height, 0.0); }
   public static void addMarginLeft(FlatBufferBuilder builder, double marginLeft) { builder.addDouble(2, marginLeft, 0.0); }
@@ -66,6 +146,22 @@ public final class ViewProperty extends Table {
   public static void addFlexDirection(FlatBufferBuilder builder, int flexDirection) { builder.addInt(8, flexDirection, 0); }
   public static void addBackgroundColor(FlatBufferBuilder builder, int backgroundColor) { builder.addInt(9, backgroundColor, 0); }
   public static void addFlexWrap(FlatBufferBuilder builder, int flexWrap) { builder.addInt(10, flexWrap, 0); }
+  public static void addContent(FlatBufferBuilder builder, int contentOffset) { builder.addOffset(11, contentOffset, 0); }
+  public static void addA(FlatBufferBuilder builder, int aOffset) { builder.addOffset(12, aOffset, 0); }
+  public static void addB(FlatBufferBuilder builder, int bOffset) { builder.addOffset(13, bOffset, 0); }
+  public static void addC(FlatBufferBuilder builder, int cOffset) { builder.addOffset(14, cOffset, 0); }
+  public static void addD(FlatBufferBuilder builder, int dOffset) { builder.addOffset(15, dOffset, 0); }
+  public static void addE(FlatBufferBuilder builder, int eOffset) { builder.addOffset(16, eOffset, 0); }
+  public static void addF(FlatBufferBuilder builder, int fOffset) { builder.addOffset(17, fOffset, 0); }
+  public static void addG(FlatBufferBuilder builder, int gOffset) { builder.addOffset(18, gOffset, 0); }
+  public static void addH(FlatBufferBuilder builder, int hOffset) { builder.addOffset(19, hOffset, 0); }
+  public static void addI(FlatBufferBuilder builder, int iOffset) { builder.addOffset(20, iOffset, 0); }
+  public static void addJ(FlatBufferBuilder builder, int jOffset) { builder.addOffset(21, jOffset, 0); }
+  public static void addK(FlatBufferBuilder builder, int kOffset) { builder.addOffset(22, kOffset, 0); }
+  public static void addL(FlatBufferBuilder builder, int lOffset) { builder.addOffset(23, lOffset, 0); }
+  public static void addM(FlatBufferBuilder builder, int mOffset) { builder.addOffset(24, mOffset, 0); }
+  public static void addN(FlatBufferBuilder builder, int nOffset) { builder.addOffset(25, nOffset, 0); }
+  public static void addO(FlatBufferBuilder builder, int oOffset) { builder.addOffset(26, oOffset, 0); }
   public static int endViewProperty(FlatBufferBuilder builder) {
     int o = builder.endTable();
     return o;

@@ -45,8 +45,40 @@ impl Engine {
             flex_direction: FlexDirection::column,
             background_color: -1,
             flex_wrap: FlexWrap::nowrap,
+            content: "hello_world".to_string(),
+            a: "a".to_string(),
+            b: "b".to_string(),
+            c: "c".to_string(),
+            d: "d".to_string(),
+            e: "e".to_string(),
+            f: "f".to_string(),
+            g: "g".to_string(),
+            h: "h".to_string(),
+            i: "i".to_string(),
+            j: "j".to_string(),
+            k: "k".to_string(),
+            l: "l".to_string(),
+            m: "m".to_string(),
+            n: "n".to_string(),
+            o: "o".to_string(),
         };
         let mut builder = flatbuffers::FlatBufferBuilder::with_capacity(1024);
+        let content = builder.create_string("hello_world");
+        let a = builder.create_string("a");
+        let b = builder.create_string("b");
+        let c = builder.create_string("c");
+        let d = builder.create_string("d");
+        let e = builder.create_string("e");
+        let f = builder.create_string("f");
+        let g = builder.create_string("g");
+        let h = builder.create_string("h");
+        let i = builder.create_string("i");
+        let j = builder.create_string("j");
+        let k = builder.create_string("k");
+        let l = builder.create_string("l");
+        let m = builder.create_string("m");
+        let n = builder.create_string("n");
+        let o = builder.create_string("o");
         let buffer_view_property = BufferViewProperty::create(
             &mut builder,
             &ViewPropertyArgs {
@@ -61,6 +93,22 @@ impl Engine {
                 flex_direction: BufferFlexDirection::column,
                 background_color: -1,
                 flex_wrap: BufferFlexWrap::nowrap,
+                content: Some(content),
+                a: Some(a),
+                b: Some(b),
+                c: Some(c),
+                d: Some(d),
+                e: Some(e),
+                f: Some(f),
+                g: Some(g),
+                h: Some(h),
+                i: Some(i),
+                j: Some(j),
+                k: Some(k),
+                l: Some(l),
+                m: Some(m),
+                n: Some(n),
+                o: Some(o),
             },
         );
         builder.finish(buffer_view_property, None);
@@ -81,11 +129,13 @@ impl Engine {
         bench_call(3000, &"flexbuffers-read", || {
             bench.call_use_flexbuffer(builder.finished_data().to_vec(), true);
         });
-        bench_call(3000, &"flapigen-no-read", || {
-            bench.call_use_flapigen(view_property, false);
+        let vp = &view_property;
+        bench_call(3000, "flapigen-no-read", || {
+            bench.call_use_flapigen(vp.to_owned(), false);
         });
-        bench_call(3000, &"flapigen-read", || {
-            bench.call_use_flapigen(view_property_clone, true);
+        let vpc = &view_property_clone;
+        bench_call(3000, "flapigen-read", || {
+            bench.call_use_flapigen(vpc.to_owned(), true);
         });
     }
     pub fn run_app(&self, app_id: i32) -> () {

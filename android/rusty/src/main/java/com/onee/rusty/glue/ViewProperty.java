@@ -86,6 +86,118 @@ public final class ViewProperty {
     }
     private static native int do_flexWrap(long self);
 
+    public final @NonNull String content() {
+        String ret = do_content(mNativeObj);
+
+        return ret;
+    }
+    private static native @NonNull String do_content(long self);
+
+    public final @NonNull String a() {
+        String ret = do_a(mNativeObj);
+
+        return ret;
+    }
+    private static native @NonNull String do_a(long self);
+
+    public final @NonNull String b() {
+        String ret = do_b(mNativeObj);
+
+        return ret;
+    }
+    private static native @NonNull String do_b(long self);
+
+    public final @NonNull String c() {
+        String ret = do_c(mNativeObj);
+
+        return ret;
+    }
+    private static native @NonNull String do_c(long self);
+
+    public final @NonNull String d() {
+        String ret = do_d(mNativeObj);
+
+        return ret;
+    }
+    private static native @NonNull String do_d(long self);
+
+    public final @NonNull String e() {
+        String ret = do_e(mNativeObj);
+
+        return ret;
+    }
+    private static native @NonNull String do_e(long self);
+
+    public final @NonNull String f() {
+        String ret = do_f(mNativeObj);
+
+        return ret;
+    }
+    private static native @NonNull String do_f(long self);
+
+    public final @NonNull String g() {
+        String ret = do_g(mNativeObj);
+
+        return ret;
+    }
+    private static native @NonNull String do_g(long self);
+
+    public final @NonNull String h() {
+        String ret = do_h(mNativeObj);
+
+        return ret;
+    }
+    private static native @NonNull String do_h(long self);
+
+    public final @NonNull String i() {
+        String ret = do_i(mNativeObj);
+
+        return ret;
+    }
+    private static native @NonNull String do_i(long self);
+
+    public final @NonNull String j() {
+        String ret = do_j(mNativeObj);
+
+        return ret;
+    }
+    private static native @NonNull String do_j(long self);
+
+    public final @NonNull String k() {
+        String ret = do_k(mNativeObj);
+
+        return ret;
+    }
+    private static native @NonNull String do_k(long self);
+
+    public final @NonNull String l() {
+        String ret = do_l(mNativeObj);
+
+        return ret;
+    }
+    private static native @NonNull String do_l(long self);
+
+    public final @NonNull String m() {
+        String ret = do_m(mNativeObj);
+
+        return ret;
+    }
+    private static native @NonNull String do_m(long self);
+
+    public final @NonNull String n() {
+        String ret = do_n(mNativeObj);
+
+        return ret;
+    }
+    private static native @NonNull String do_n(long self);
+
+    public final @NonNull String o() {
+        String ret = do_o(mNativeObj);
+
+        return ret;
+    }
+    private static native @NonNull String do_o(long self);
+
     public synchronized void delete() {
         if (mNativeObj != 0) {
             do_delete(mNativeObj);
