@@ -1,12 +1,12 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize, Debug)]
 pub enum Display {
     flex,
     none,
 }
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize, Debug)]
 pub enum FlexDirection {
     column,
     column_reverse,
@@ -14,13 +14,14 @@ pub enum FlexDirection {
     row_reverse,
 }
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize, Debug)]
 pub enum FlexWrap {
     nowrap,
     wrap,
 }
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct ViewProperty {
     pub width: f64,
     pub height: f64,
@@ -49,4 +50,66 @@ pub struct ViewProperty {
     pub m: String,
     pub n: String,
     pub o: String,
+}
+
+impl ViewProperty {
+    pub fn new(
+        width: f64,
+        height: f64,
+        margin_left: f64,
+        margin_right: f64,
+        margin_top: f64,
+        margin_bottom: f64,
+        flex: i32,
+        display: Display,
+        flex_direction: FlexDirection,
+        background_color: i32,
+        flex_wrap: FlexWrap,
+        content: String,
+        a: String,
+        b: String,
+        c: String,
+        d: String,
+        e: String,
+        f: String,
+        g: String,
+        h: String,
+        i: String,
+        j: String,
+        k: String,
+        l: String,
+        m: String,
+        n: String,
+        o: String,
+    ) -> Self {
+        ViewProperty {
+            width,
+            height,
+            margin_left,
+            margin_right,
+            margin_top,
+            margin_bottom,
+            flex,
+            display,
+            flex_direction,
+            background_color,
+            flex_wrap,
+            content,
+            a,
+            b,
+            c,
+            d,
+            e,
+            f,
+            g,
+            h,
+            i,
+            j,
+            k,
+            l,
+            m,
+            n,
+            o,
+        }
+    }
 }

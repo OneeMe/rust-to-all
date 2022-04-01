@@ -11,5 +11,8 @@ pub fn init_log() {
             .with_min_level(Level::Trace)
             .with_tag("Rust"),
     );
+    std::panic::set_hook(Box::new(|info| {
+        info!("{}", info);
+    }));
     info!("run on android");
 }

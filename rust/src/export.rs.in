@@ -144,7 +144,34 @@ foreign_enum!(
 
 foreign_class!(class ViewProperty {
     self_type ViewProperty;
-    private constructor = empty;
+    constructor ViewProperty::new(width: f64,
+        height: f64,
+        margin_left: f64,
+        margin_right: f64,
+        margin_top: f64,
+        margin_bottom: f64,
+        flex: i32,
+        display: Display,
+        flex_direction: FlexDirection,
+        background_color: i32,
+        flex_wrap: FlexWrap,
+        content: String,
+        a: String,
+        b: String,
+        c: String,
+        d: String,
+        e: String,
+        f: String,
+        g: String,
+        h: String,
+        i: String,
+        j: String,
+        k: String,
+        l: String,
+        m: String,
+        n: String,
+        o: String,
+    ) -> ViewProperty;
     fn ViewProperty::width(&self) -> f64 {
         this.width.clone()
     }
@@ -263,10 +290,19 @@ foreign_callback!(callback FromRustToJavaBench {
     callUseFlexbuffer = call_use_flexbuffer(&self, args: Vec<u8>, read: bool);
 });
 
+foreign_class!(class FromJavaToRustBench {
+    self_type FromJavaToRustBench;
+    private constructor = empty;
+    fn FromJavaToRustBench::call_empty(&self);
+    fn FromJavaToRustBench::call_use_flapigen(&self, args: ViewProperty, read: bool);
+    fn FromJavaToRustBench::call_use_json(&self, args: String, read: bool);
+    fn FromJavaToRustBench::call_use_flatbuffer(&self, args: &[u8], read: bool);
+});
+
 foreign_class!(class Engine {
     self_type Engine;
     constructor Engine::new(manager: Box<dyn UIManager>) -> Engine;
     fn Engine::launch(&self) -> ();
-    fn Engine::run_bench(&self, bench: Box<dyn FromRustToJavaBench>) -> ();
+    fn Engine::run_bench(&self, bench: Box<dyn FromRustToJavaBench>) -> FromJavaToRustBench;
     fn Engine::run_app(&self, _: i32) -> (); alias runApp;
 });

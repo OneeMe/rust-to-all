@@ -1,4 +1,4 @@
-mod buffer;
+pub mod buffer;
 pub mod collection;
 pub mod property;
 mod view;
@@ -32,7 +32,7 @@ impl Engine {
         init_log();
         info!("launched");
     }
-    pub fn run_bench(&self, bench: Box<dyn FromRustToJavaBench>) -> () {
+    pub fn run_bench(&self, bench: Box<dyn FromRustToJavaBench>) -> FromJavaToRustBench {
         let view_property = ViewProperty {
             width: 100.0,
             height: 100.0,
@@ -137,6 +137,7 @@ impl Engine {
         bench_call(3000, "flapigen-read", || {
             bench.call_use_flapigen(vpc.to_owned(), true);
         });
+        FromJavaToRustBench {}
     }
     pub fn run_app(&self, app_id: i32) -> () {
         info!("app id is {}", app_id);

@@ -13,21 +13,21 @@ public class ViewProperty {
     private int backgroundColor;
     private String flexWrap;
     private String content;
-private String a;
-private String b;
-private String c;
-private String d;
-private String e;
-private String f;
-private String g;
-private String h;
-private String i;
-private String j;
-private String k;
-private String l;
-private String m;
-private String n;
-private String o;
+    private String a;
+    private String b;
+    private String c;
+    private String d;
+    private String e;
+    private String f;
+    private String g;
+    private String h;
+    private String i;
+    private String j;
+    private String k;
+    private String l;
+    private String m;
+    private String n;
+    private String o;
 
     public String getA() {
         return a;
@@ -135,6 +135,36 @@ private String o;
 
     public String getContent() {
         return content;
+    }
+
+    public ViewProperty(double width, double height, double marginLeft, double marginRight, double marginTop, double marginBottom, int flex, String display, String flexDirection, int backgroundColor, String flexWrap, String content, String a, String b, String c, String d, String e, String f, String g, String h, String i, String j, String k, String l, String m, String n, String o) {
+        this.width = width;
+        this.height = height;
+        this.marginLeft = marginLeft;
+        this.marginRight = marginRight;
+        this.marginTop = marginTop;
+        this.marginBottom = marginBottom;
+        this.flex = flex;
+        this.display = display;
+        this.flexDirection = flexDirection;
+        this.backgroundColor = backgroundColor;
+        this.flexWrap = flexWrap;
+        this.content = content;
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.d = d;
+        this.e = e;
+        this.f = f;
+        this.g = g;
+        this.h = h;
+        this.i = i;
+        this.j = j;
+        this.k = k;
+        this.l = l;
+        this.m = m;
+        this.n = n;
+        this.o = o;
     }
 
     public ViewProperty() {

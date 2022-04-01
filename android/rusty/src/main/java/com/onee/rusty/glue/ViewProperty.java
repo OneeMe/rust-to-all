@@ -4,7 +4,12 @@ import androidx.annotation.NonNull;
 
 public final class ViewProperty {
 
-    private ViewProperty() {}
+    public ViewProperty(double width, double height, double margin_left, double margin_right, double margin_top, double margin_bottom, int flex, @NonNull Display display, @NonNull FlexDirection flex_direction, int background_color, @NonNull FlexWrap flex_wrap, @NonNull String content, @NonNull String a, @NonNull String b, @NonNull String c, @NonNull String d, @NonNull String e, @NonNull String f, @NonNull String g, @NonNull String h, @NonNull String i, @NonNull String j, @NonNull String k, @NonNull String l, @NonNull String m, @NonNull String n, @NonNull String o) {
+        int a7 = display.getValue();        int a8 = flex_direction.getValue();        int a10 = flex_wrap.getValue();
+        mNativeObj = init(width, height, margin_left, margin_right, margin_top, margin_bottom, flex, a7, a8, background_color, a10, content, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o);
+        JNIReachabilityFence.reachabilityFence3(display, flex_direction, flex_wrap);
+    }
+    private static native long init(double width, double height, double margin_left, double margin_right, double margin_top, double margin_bottom, int flex, int display, int flex_direction, int background_color, int flex_wrap, @NonNull String content, @NonNull String a, @NonNull String b, @NonNull String c, @NonNull String d, @NonNull String e, @NonNull String f, @NonNull String g, @NonNull String h, @NonNull String i, @NonNull String j, @NonNull String k, @NonNull String l, @NonNull String m, @NonNull String n, @NonNull String o);
 
     public final double width() {
         double ret = do_width(mNativeObj);
