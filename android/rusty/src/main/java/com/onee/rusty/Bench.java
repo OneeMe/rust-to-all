@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.onee.rusty.glue.FromRustToJavaBench;
 import com.onee.rusty.glue.ViewProperty;
@@ -59,8 +60,7 @@ public class Bench implements FromRustToJavaBench {
     @Override
     public void callUseJson(@NonNull String args, boolean read) {
         if (read) {
-            Gson gson = new Gson();
-            com.onee.rusty.json.ViewProperty viewProperty = gson.fromJson(args, com.onee.rusty.json.ViewProperty.class);
+            com.onee.rusty.json.ViewProperty viewProperty = JSON.parseObject(args, com.onee.rusty.json.ViewProperty.class);
             log("callUseJson-width: " + viewProperty.getWidth());
             log("callUseJson-height: " + viewProperty.getHeight());
             log("callUseJson-marginLeft: " + viewProperty.getMarginLeft());
@@ -110,20 +110,20 @@ public class Bench implements FromRustToJavaBench {
             log("callUseFlexbuffer-flexWrap: " + viewProperty.flexWrap());
             log("callUseFlexbuffer-content: " + viewProperty.content());
             log("callUseFlexbuffer-a:" + viewProperty.a());
-log("callUseFlexbuffer-b:" + viewProperty.b());
-log("callUseFlexbuffer-c:" + viewProperty.c());
-log("callUseFlexbuffer-d:" + viewProperty.d());
-log("callUseFlexbuffer-e:" + viewProperty.e());
-log("callUseFlexbuffer-f:" + viewProperty.f());
-log("callUseFlexbuffer-g:" + viewProperty.g());
-log("callUseFlexbuffer-h:" + viewProperty.h());
-log("callUseFlexbuffer-i:" + viewProperty.i());
-log("callUseFlexbuffer-j:" + viewProperty.j());
-log("callUseFlexbuffer-k:" + viewProperty.k());
-log("callUseFlexbuffer-l:" + viewProperty.l());
-log("callUseFlexbuffer-m:" + viewProperty.m());
-log("callUseFlexbuffer-n:" + viewProperty.n());
-log("callUseFlexbuffer-o:" + viewProperty.o());
+            log("callUseFlexbuffer-b:" + viewProperty.b());
+            log("callUseFlexbuffer-c:" + viewProperty.c());
+            log("callUseFlexbuffer-d:" + viewProperty.d());
+            log("callUseFlexbuffer-e:" + viewProperty.e());
+            log("callUseFlexbuffer-f:" + viewProperty.f());
+            log("callUseFlexbuffer-g:" + viewProperty.g());
+            log("callUseFlexbuffer-h:" + viewProperty.h());
+            log("callUseFlexbuffer-i:" + viewProperty.i());
+            log("callUseFlexbuffer-j:" + viewProperty.j());
+            log("callUseFlexbuffer-k:" + viewProperty.k());
+            log("callUseFlexbuffer-l:" + viewProperty.l());
+            log("callUseFlexbuffer-m:" + viewProperty.m());
+            log("callUseFlexbuffer-n:" + viewProperty.n());
+            log("callUseFlexbuffer-o:" + viewProperty.o());
         }
     }
 }
