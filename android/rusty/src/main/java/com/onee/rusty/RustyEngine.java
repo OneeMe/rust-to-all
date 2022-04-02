@@ -116,7 +116,7 @@ public class RustyEngine {
             public void run() {
                 FlatBufferBuilder builder = getFlatBufferBuilder();
                 ByteBuffer byteBuffer = builder.dataBuffer();
-                fromJavaToRustBench.call_use_flatbuffer(byteBuffer.array(), false);
+                fromJavaToRustBench.call_use_flatbuffer(byteBuffer.compact().array(), false);
             }
         });
         this.benchCall(3000, "flatbuffer", new Runnable() {
@@ -124,7 +124,7 @@ public class RustyEngine {
             public void run() {
                 FlatBufferBuilder builder = getFlatBufferBuilder();
                 ByteBuffer byteBuffer = builder.dataBuffer();
-                fromJavaToRustBench.call_use_flatbuffer(byteBuffer.array(), true);
+                fromJavaToRustBench.call_use_flatbuffer(byteBuffer.compact().array(), true);
             }
         });
         int rootTag = uiManager.addRootView(rootView);
