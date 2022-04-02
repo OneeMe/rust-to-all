@@ -2,8 +2,6 @@ use flapigen::{JavaConfig, LanguageConfig};
 use std::path::Path;
 
 fn main() {
-    let in_src = Path::new("src").join("export.rs.in");
-    let out_src = Path::new("src").join("export.rs");
     let swig_gen = flapigen::Generator::new(LanguageConfig::JavaConfig(
         JavaConfig::new(
             Path::new("..")
@@ -22,7 +20,12 @@ fn main() {
     ))
     .remove_not_generated_files_from_output_directory(true)
     .rustfmt_bindings(true);
-    //ANCHOR_END: config
-    swig_gen.expand("android bindings", &in_src, &out_src);
-    println!("cargo:rerun-if-changed={}", in_src.display());
+    swig_gen.expand_many(
+        "rustylib",
+        &vec![
+            &Path::new("src/flapigen.rs.in"),
+            &Path::new("src/bench/jni/flapigen.rs.in"),
+        ],
+        &Path::new("src").join("flapigen.rs"),
+    );
 }

@@ -1,0 +1,182 @@
+use jni::sys::*;
+
+foreign_enum!(
+    enum Display {
+        flex = Display::flex,
+        none = Display::none,
+    }
+);
+
+foreign_enum!(
+    enum FlexDirection {
+        column = FlexDirection::column,
+        column_reverse = FlexDirection::column_reverse,
+        row = FlexDirection::row,
+        row_reverse = FlexDirection::row_reverse,
+    }
+);
+
+foreign_enum!(
+    enum FlexWrap {
+        nowrap = FlexWrap::nowrap,
+        wrap = FlexWrap::wrap,
+    }
+);
+
+foreign_class!(class ViewProperty {
+  self_type ViewProperty;
+  constructor ViewProperty::new(width: f64,
+      height: f64,
+      margin_left: f64,
+      margin_right: f64,
+      margin_top: f64,
+      margin_bottom: f64,
+      flex: i32,
+      display: Display,
+      flex_direction: FlexDirection,
+      background_color: i32,
+      flex_wrap: FlexWrap,
+      content: String,
+      a: String,
+      b: String,
+      c: String,
+      d: String,
+      e: String,
+      f: String,
+      g: String,
+      h: String,
+      i: String,
+      j: String,
+      k: String,
+      l: String,
+      m: String,
+      n: String,
+      o: String,
+  ) -> ViewProperty;
+  fn ViewProperty::width(&self) -> f64 {
+      this.width.clone()
+  }
+  fn ViewProperty::height(&self) -> f64 {
+      this.height.clone()
+  }
+  fn ViewProperty::marginLeft(&self) -> f64 {
+      this.margin_left.clone()
+  }
+  fn ViewProperty::marginRight(&self) -> f64 {
+      this.margin_right.clone()
+  }
+  fn ViewProperty::marginTop(&self) -> f64 {
+      this.margin_top.clone()
+  }
+  fn ViewProperty::marginBottom(&self) -> f64 {
+      this.margin_bottom.clone()
+  }
+  fn ViewProperty::flex(&self) -> i32 {
+      this.flex.clone()
+  }
+  fn ViewProperty::display(&self) -> Display {
+      this.display.clone()
+  }
+  fn ViewProperty::flexDirection(&self) -> FlexDirection {
+      this.flex_direction.clone()
+  }
+  fn ViewProperty::backgroundColor(&self) -> i32 {
+      this.background_color.clone()
+  }
+  fn ViewProperty::flexWrap(&self) -> FlexWrap {
+      this.flex_wrap.clone()
+  }
+  fn ViewProperty::content(&self) -> String {
+      this.content.clone()
+  }
+  fn ViewProperty::a(&self) -> String {
+      this.a.clone()
+  }
+  fn ViewProperty::b(&self) -> String {
+      this.b.clone()
+  }
+  fn ViewProperty::c(&self) -> String {
+      this.c.clone()
+  }
+  fn ViewProperty::d(&self) -> String {
+      this.d.clone()
+  }
+  fn ViewProperty::e(&self) -> String {
+      this.e.clone()
+  }
+  fn ViewProperty::f(&self) -> String {
+      this.f.clone()
+  }
+  fn ViewProperty::g(&self) -> String {
+      this.g.clone()
+  }
+  fn ViewProperty::h(&self) -> String {
+      this.h.clone()
+  }
+  fn ViewProperty::i(&self) -> String {
+      this.i.clone()
+  }
+  fn ViewProperty::j(&self) -> String {
+      this.j.clone()
+  }
+  fn ViewProperty::k(&self) -> String {
+      this.k.clone()
+  }
+  fn ViewProperty::l(&self) -> String {
+      this.l.clone()
+  }
+  fn ViewProperty::m(&self) -> String {
+      this.m.clone()
+  }
+  fn ViewProperty::n(&self) -> String {
+      this.n.clone()
+  }
+  fn ViewProperty::o(&self) -> String {
+      this.o.clone()
+  }
+});
+
+// From https://github.com/Dushistov/flapigen-rs/issues/143#issuecomment-664131615
+foreign_typemap!(
+  ($p:r_type) Vec<u8> => jbyteArray {
+      let slice = &($p)[..];
+      let slice = unsafe { std::mem::transmute::<&[u8], &[i8]>(slice) };
+      let raw = JavaByteArray::from_slice_to_raw(slice, env);
+      $out = raw;
+  };
+  ($p:f_type) => "jbyteArray";
+);
+// From https://github.com/Dushistov/flapigen-rs/issues/143#issuecomment-664131615
+foreign_typemap!(
+  ($p:r_type) &'a [u8] => jbyteArray {
+      let slice = unsafe { std::mem::transmute::<&[u8], &[i8]>($p) };
+      let raw = JavaByteArray::from_slice_to_raw(slice, env);
+      $out = raw;
+  };
+  ($p:f_type) => "jbyteArray";
+  ($p:r_type) &'a [u8] <= jbyteArray {
+      let arr = JavaByteArray::new(env, $p);
+      let slice = arr.to_slice();
+      let slice = unsafe { std::mem::transmute::<&[i8], &[u8]>(slice) };
+      $out = slice;
+  };
+  ($p:f_type) <= "jbyteArray";
+);
+
+foreign_callback!(callback FromRustToJavaBench {
+  self_type FromRustToJavaBench;
+  callEmpty = call_empty(&self);
+  callUseFlapigen = call_use_flapigen(&self, args: ViewProperty, read: bool);
+  callUseJson = call_use_json(&self, args: String, read: bool);
+  callUseFlexbuffer = call_use_flexbuffer(&self, args: Vec<u8>, read: bool);
+});
+
+foreign_class!(class FromJavaToRustBench {
+  self_type FromJavaToRustBench;
+  private constructor = empty;
+  fn Engine::run_bench(&self, bench: Box<dyn FromRustToJavaBench>) -> ();
+  fn FromJavaToRustBench::call_empty(&self);
+  fn FromJavaToRustBench::call_use_flapigen(&self, args: ViewProperty, read: bool);
+  fn FromJavaToRustBench::call_use_json(&self, args: String, read: bool);
+  fn FromJavaToRustBench::call_use_flatbuffer(&self, args: &[u8], read: bool);
+});

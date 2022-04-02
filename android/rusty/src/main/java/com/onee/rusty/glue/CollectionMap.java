@@ -49,12 +49,12 @@ public final class CollectionMap {
     }
     /*package*/ long mNativeObj;
 
-    public ValueType[] importTypes() {
-        int[] rawTypes = rawImportTypes();
-        ValueType[] types = new ValueType[rawTypes.length];
-        for (int i = 0;i < types.length;i++) {
-            types[i] = ValueType.fromInt(rawTypes[i]);
-        }
-        return types;
-    }
-    }
+  public ValueType[] importTypes() {
+      int[] rawTypes = rawImportTypes();
+      ValueType[] types = new ValueType[rawTypes.length];
+      for (int i = 0;i < types.length;i++) {
+          types[i] = ValueType.fromInt(rawTypes[i]);
+      }
+      return types;
+  }
+  }

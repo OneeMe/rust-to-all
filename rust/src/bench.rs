@@ -114,7 +114,7 @@ impl FromJavaToRustBench {
                 "flatbuffer-read",
                 &(format!("{:?}", view_property.flex_wrap())),
             );
-            self.log("flatbuffer-read", &view_property.conte    nt().unwrap());
+            self.log("flatbuffer-read", &view_property.content().unwrap());
             self.log("flatbuffer-read", &view_property.a().unwrap());
             self.log("flatbuffer-read", &view_property.b().unwrap());
             self.log("flatbuffer-read", &view_property.c().unwrap());

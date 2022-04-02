@@ -6,6 +6,11 @@ public final class FromJavaToRustBench {
 
     private FromJavaToRustBench() {}
 
+    public final void run_bench(@NonNull FromRustToJavaBench bench) {
+        do_run_bench(mNativeObj, bench);
+    }
+    private static native void do_run_bench(long self, FromRustToJavaBench bench);
+
     public final void call_empty() {
         do_call_empty(mNativeObj);
     }

@@ -1,9 +1,9 @@
 #[macro_use]
 extern crate log;
 
-#[macro_use]
-mod bench;
-mod core;
+// #[macro_use]
+// mod bench;
+// mod core;
 #[cfg(target_os = "android")]
-mod export;
+mod flapigen;
 mod platform;

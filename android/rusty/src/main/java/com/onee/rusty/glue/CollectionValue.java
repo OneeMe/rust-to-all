@@ -73,22 +73,22 @@ public final class CollectionValue {
     }
     /*package*/ long mNativeObj;
 
-    public Object getValue() {
-        switch (property_type()) {
-            case Null:
-                return null;
-            case Number:
-                return as_number();
-            case Boolean:
-                return as_bool();
-            case String:
-                return as_string();
-            case Map:
-                return as_map();
-            case Array:
-                return as_array();
-            default:
-                throw new IllegalStateException("Unexpected value: " + property_type());
-        }
-    }
-    }
+  public Object getValue() {
+      switch (property_type()) {
+          case Null:
+              return null;
+          case Number:
+              return as_number();
+          case Boolean:
+              return as_bool();
+          case String:
+              return as_string();
+          case Map:
+              return as_map();
+          case Array:
+              return as_array();
+          default:
+              throw new IllegalStateException("Unexpected value: " + property_type());
+      }
+  }
+  }
