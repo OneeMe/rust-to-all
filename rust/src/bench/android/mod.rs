@@ -15,7 +15,12 @@ pub trait FromRustToJavaBench {
 pub struct FromJavaToRustBench {}
 
 impl FromJavaToRustBench {
+    pub fn new() -> Self {
+        FromJavaToRustBench {}
+    }
+
     fn log(&self, name: &str, content: &str) {
+        #[cfg(debug_assertions)]
         info!("{} is {}", name, content);
     }
     pub fn run_bench(&self, bench: Box<dyn FromRustToJavaBench>) {
@@ -248,5 +253,9 @@ where
     for _ in 0..count {
         block();
     }
-    info!("{} Elapsed time: {:.2?}", name, before.elapsed());
+    info!(
+        "[Bench-Rust-to-Java] {} Elapsed time: {:.2?}",
+        name,
+        before.elapsed()
+    );
 }

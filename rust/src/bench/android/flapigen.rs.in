@@ -171,12 +171,12 @@ foreign_callback!(callback FromRustToJavaBench {
   callEmpty = call_empty(&self);
   callUseFlapigen = call_use_flapigen(&self, args: ViewProperty, read: bool);
   callUseJson = call_use_json(&self, args: String, read: bool);
-  callUseFlex = call_use_flatbuffer(&self, args: Vec<u8>, read: bool);
+  callUseFlatbuffer = call_use_flatbuffer(&self, args: Vec<u8>, read: bool);
 });
 
 foreign_class!(class FromJavaToRustBench {
   self_type FromJavaToRustBench;
-  private constructor = empty;
+  constructor FromJavaToRustBench::new() -> FromJavaToRustBench;
   fn FromJavaToRustBench::run_bench(&self, bench: Box<dyn FromRustToJavaBench>) -> ();
   fn FromJavaToRustBench::call_empty(&self);
   fn FromJavaToRustBench::call_use_flapigen(&self, args: ViewProperty, read: bool);

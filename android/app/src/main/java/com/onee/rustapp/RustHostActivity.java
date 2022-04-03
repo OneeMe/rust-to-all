@@ -27,12 +27,15 @@ import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.views.text.ReactRawTextManager;
 import com.facebook.react.views.text.ReactTextViewManager;
 import com.facebook.react.views.view.ReactViewManager;
+import com.onee.rusty.Bench;
 import com.onee.rusty.RustCatalystInstance;
 import com.onee.rusty.RustRootView;
 import com.onee.rusty.RustyEngine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class RustHostActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity {
     private UIManagerModule uiManagerModule;
@@ -44,6 +47,18 @@ public class RustHostActivity extends AppCompatActivity implements DefaultHardwa
         setContentView(R.layout.rust_host);
 
         run(false);
+        bench();
+    }
+
+    private void bench() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Bench bench = new Bench();
+                bench.run();;
+            }
+        }, 1000);
     }
 
     private void run(boolean isNative) {
