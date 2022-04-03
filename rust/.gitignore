@@ -1,3 +1,4 @@
 /target
 Cargo.lock
-flapigen.rs
+src/flapigen.rs
+*_generated.rs

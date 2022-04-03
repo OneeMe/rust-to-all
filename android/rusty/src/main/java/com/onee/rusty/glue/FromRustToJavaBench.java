@@ -14,6 +14,6 @@ public interface FromRustToJavaBench {
     void callUseJson(@NonNull String args, boolean read);
 
 
-    void callUseFlexbuffer(@NonNull byte [] args, boolean read);
+    void callUseFlex(@NonNull byte [] args, boolean read);
 
 }

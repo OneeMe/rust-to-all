@@ -1,6 +1,7 @@
 use jni::sys::*;
 
 /// --------------------------------------- EXPORT TYPE ---------------------------------------
+use crate::core::collection::*;
 
 foreign_enum!(
     enum ValueType {
@@ -98,6 +99,7 @@ foreign_class!(class CollectionList {
 });
 
 /// --------------------------------------- IMPORT TYPE ---------------------------------------
+use crate::core::*;
 
 foreign_callback!(
   callback UIManager {

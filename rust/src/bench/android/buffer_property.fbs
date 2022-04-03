@@ -1,12 +1,12 @@
-namespace com.onee.rusty.model;
+namespace flatbuffer_generate;
 
-enum Display: int {
+enum BufferDisplay: int {
     flex,
     none,
 }
 
 
-enum FlexDirection: int {
+enum BufferFlexDirection: int {
     column,
     column_reverse,
     row,
@@ -14,12 +14,12 @@ enum FlexDirection: int {
 }
 
 
-enum FlexWrap: int {
+enum BufferFlexWrap: int {
     nowrap,
     wrap,
 }
 
-table ViewProperty {
+table BufferViewProperty {
   width: double;
   height: double;
   margin_left: double;
@@ -27,10 +27,10 @@ table ViewProperty {
   margin_top: double;
   margin_bottom: double;
   flex: int;
-  display: Display;
-  flex_direction: FlexDirection;
+  display: BufferDisplay;
+  flex_direction: BufferFlexDirection;
   background_color: int;
-  flex_wrap: FlexWrap;
+  flex_wrap: BufferFlexWrap;
   content: string;
   a: string;
   b: string;
@@ -49,4 +49,4 @@ table ViewProperty {
   o: string;
 }
 
-root_type ViewProperty;
+root_type BufferViewProperty;

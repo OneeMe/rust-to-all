@@ -1,15 +1,15 @@
-use crate::core::property::*;
-use jni::sys::jbyteArray;
-use std::time::Instant;
+mod buffer_property_generated;
 
-use crate::core::buffer::com::onee::rusty::model::root_as_view_property;
-use crate::core::buffer::com::onee::rusty::model::ViewProperty as BufferViewProperty;
+use buffer_property_generated::flatbuffer_generate::*;
+
+use super::property::*;
+use std::time::Instant;
 
 pub trait FromRustToJavaBench {
     fn call_empty(&self);
     fn call_use_flapigen(&self, args: ViewProperty, read: bool);
     fn call_use_json(&self, args: String, read: bool);
-    fn call_use_flexbuffer(&self, args: Vec<u8>, read: bool);
+    fn call_use_flatbuffer(&self, args: Vec<u8>, read: bool);
 }
 
 pub struct FromJavaToRustBench {}
@@ -17,6 +17,112 @@ pub struct FromJavaToRustBench {}
 impl FromJavaToRustBench {
     fn log(&self, name: &str, content: &str) {
         info!("{} is {}", name, content);
+    }
+    pub fn run_bench(&self, bench: Box<dyn FromRustToJavaBench>) {
+        let view_property = ViewProperty {
+            width: 100.0,
+            height: 100.0,
+            margin_left: 10.0,
+            margin_right: 10.0,
+            margin_top: 10.0,
+            margin_bottom: 10.0,
+            flex: 1,
+            display: Display::flex,
+            flex_direction: FlexDirection::column,
+            background_color: -1,
+            flex_wrap: FlexWrap::nowrap,
+            content: "hello_world".to_string(),
+            a: "a".to_string(),
+            b: "b".to_string(),
+            c: "c".to_string(),
+            d: "d".to_string(),
+            e: "e".to_string(),
+            f: "f".to_string(),
+            g: "g".to_string(),
+            h: "h".to_string(),
+            i: "i".to_string(),
+            j: "j".to_string(),
+            k: "k".to_string(),
+            l: "l".to_string(),
+            m: "m".to_string(),
+            n: "n".to_string(),
+            o: "o".to_string(),
+        };
+        let mut builder = flatbuffers::FlatBufferBuilder::with_capacity(1024);
+        let content = builder.create_string("hello_world");
+        let a = builder.create_string("a");
+        let b = builder.create_string("b");
+        let c = builder.create_string("c");
+        let d = builder.create_string("d");
+        let e = builder.create_string("e");
+        let f = builder.create_string("f");
+        let g = builder.create_string("g");
+        let h = builder.create_string("h");
+        let i = builder.create_string("i");
+        let j = builder.create_string("j");
+        let k = builder.create_string("k");
+        let l = builder.create_string("l");
+        let m = builder.create_string("m");
+        let n = builder.create_string("n");
+        let o = builder.create_string("o");
+        let buffer_view_property = BufferViewProperty::create(
+            &mut builder,
+            &BufferViewPropertyArgs {
+                width: 100.0,
+                height: 100.0,
+                margin_left: 10.0,
+                margin_right: 10.0,
+                margin_top: 10.0,
+                margin_bottom: 10.0,
+                flex: 1,
+                display: BufferDisplay::flex,
+                flex_direction: BufferFlexDirection::column,
+                background_color: -1,
+                flex_wrap: BufferFlexWrap::nowrap,
+                content: Some(content),
+                a: Some(a),
+                b: Some(b),
+                c: Some(c),
+                d: Some(d),
+                e: Some(e),
+                f: Some(f),
+                g: Some(g),
+                h: Some(h),
+                i: Some(i),
+                j: Some(j),
+                k: Some(k),
+                l: Some(l),
+                m: Some(m),
+                n: Some(n),
+                o: Some(o),
+            },
+        );
+        builder.finish(buffer_view_property, None);
+        let mut s = flexbuffers::FlexbufferSerializer::new();
+        let view_property_clone = view_property.clone();
+        bench_call(3000, &"empty", || {
+            bench.call_empty();
+        });
+        bench_call(3000, &"json-no-read", || {
+            bench.call_use_json(serde_json::to_string(&view_property).unwrap(), false);
+        });
+        bench_call(3000, &"json-read", || {
+            bench.call_use_json(serde_json::to_string(&view_property).unwrap(), true);
+        });
+        bench_call(3000, &"flexbuffers-no-read", || {
+            bench.call_use_flatbuffer(builder.finished_data().to_vec(), false);
+        });
+        bench_call(3000, &"flexbuffers-read", || {
+            bench.call_use_flatbuffer(builder.finished_data().to_vec(), true);
+        });
+        let vp = &view_property;
+        bench_call(3000, "flapigen-no-read", || {
+            bench.call_use_flapigen(vp.to_owned(), false);
+        });
+        let vpc = &view_property_clone;
+        bench_call(3000, "flapigen-read", || {
+            bench.call_use_flapigen(vpc.to_owned(), true);
+        });
     }
     pub fn call_empty(&self) {}
     pub fn call_use_flapigen(&self, args: ViewProperty, read: bool) {
@@ -87,7 +193,7 @@ impl FromJavaToRustBench {
     }
     pub fn call_use_flatbuffer(&self, args: &[u8], read: bool) {
         if read {
-            let view_property: BufferViewProperty = root_as_view_property(args).unwrap();
+            let view_property: BufferViewProperty = root_as_buffer_view_property(args).unwrap();
             self.log("flatbuffer-read", &view_property.width().to_string());
             self.log("flatbuffer-read", &view_property.height().to_string());
             self.log("flatbuffer-read", &view_property.margin_left().to_string());
