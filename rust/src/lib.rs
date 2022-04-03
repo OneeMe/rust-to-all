@@ -1,10 +1,8 @@
-/// cbindgen:ignore
+#[macro_use]
+extern crate log;
+
+mod bench;
+mod core;
 #[cfg(target_os = "android")]
-mod android;
-
-#[cfg(target_os = "ios")]
-mod ios;
-
-/// cbindgen:ignore
-#[cfg(target_arch = "wasm32")]
-mod web;
+mod flapigen;
+mod platform;

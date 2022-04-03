@@ -1,0 +1,130 @@
+use jni::sys::*;
+
+/// --------------------------------------- EXPORT TYPE ---------------------------------------
+use crate::core::collection::*;
+
+foreign_enum!(
+    enum ValueType {
+        Null = ValueType::Null,
+        Boolean = ValueType::Boolean,
+        Number = ValueType::Number,
+        String = ValueType::String,
+        Map = ValueType::Map,
+        Array = ValueType::Array,
+    }
+);
+
+foreign_typemap!(
+  ($p:r_type) Vec<ValueType> => Vec<i32> {
+      $out = $p.iter().map(|ele| ele.to_owned() as i32).collect();
+  };
+);
+
+foreign_class!(class CollectionValue {
+  self_type CollectionValue;
+  private constructor = empty;
+  fn PropertyVale::property_type(&self) -> ValueType {
+      this.property_type.clone()
+  }
+  fn CollectionValue::as_bool(&self) -> bool {
+      this.value.as_bool().unwrap()
+  }
+  fn CollectionValue::as_string(&self) -> String {
+      this.value.as_str().unwrap().to_owned()
+  }
+  fn CollectionValue::as_map(&self) -> CollectionMap {
+      CollectionMap::new(this.value.as_object().unwrap().clone())
+  }
+  fn CollectionValue::as_array(&self) -> CollectionList {
+      CollectionList::new(this.value.as_array().unwrap().clone())
+  }
+  fn CollectionValue::as_number(&self) -> f64 {
+      this.value.as_f64().unwrap()
+  }
+  foreign_code r#"
+  public Object getValue() {
+      switch (property_type()) {
+          case Null:
+              return null;
+          case Number:
+              return as_number();
+          case Boolean:
+              return as_bool();
+          case String:
+              return as_string();
+          case Map:
+              return as_map();
+          case Array:
+              return as_array();
+          default:
+              throw new IllegalStateException("Unexpected value: " + property_type());
+      }
+  }
+  "#;
+});
+
+foreign_class!(class CollectionMap {
+  self_type CollectionMap;
+  private constructor = empty;
+  fn CollectionMap::import_keys(&self) -> Vec<String>; alias importKeys;
+  fn CollectionMap::import_values(&self) -> Vec<CollectionValue>; alias importValues;
+  fn CollectionMap::import_types(&self) -> Vec<ValueType>; alias rawImportTypes;
+  foreign_code r#"
+  public ValueType[] importTypes() {
+      int[] rawTypes = rawImportTypes();
+      ValueType[] types = new ValueType[rawTypes.length];
+      for (int i = 0;i < types.length;i++) {
+          types[i] = ValueType.fromInt(rawTypes[i]);
+      }
+      return types;
+  }
+  "#;
+});
+
+foreign_class!(class CollectionList {
+  self_type CollectionList;
+  private constructor = empty;
+  fn CollectionList::import_values(&self) -> Vec<CollectionValue>; alias importValues;
+  fn CollectionList::import_types(&self) -> Vec<ValueType>; alias rawImportTypes;
+  foreign_code r#"
+  public ValueType[] importTypes() {
+      int[] rawTypes = rawImportTypes();
+      ValueType[] types = new ValueType[rawTypes.length];
+      for (int i = 0;i < types.length;i++) {
+          types[i] = ValueType.fromInt(rawTypes[i]);
+      }
+      return types;
+  }
+  "#;
+});
+
+/// --------------------------------------- IMPORT TYPE ---------------------------------------
+use crate::core::*;
+
+foreign_callback!(
+  callback UIManager {
+      self_type UIManager;
+      createView = create_view(&self, tag: i32, class_name: &str, root_view_tag: i32, properties: CollectionMap);
+      setChildren = set_children(&self, tag: i32, children: Vec<i32>);
+      updateView = update_view(&self, tag: i32, class_name: &str, properties: CollectionMap);
+      manageChildren = manage_children(
+          &self,
+          tag: i32,
+          move_from: Vec<i32>,
+          move_to: Vec<i32>,
+          added_children: Vec<i32>,
+          add_at_indices: Vec<i32>,
+          remove_from: Vec<i32>,
+      );
+      onBatchComplete = on_batch_complete(&self);
+  }
+);
+
+/// --------------------------------------- ENTRY ---------------------------------------
+
+foreign_class!(class Engine {
+  self_type Engine;
+  constructor Engine::new(manager: Box<dyn UIManager>) -> Engine;
+  fn Engine::launch(&self) -> ();
+  fn Engine::run_app(&self, _: i32) -> (); alias runApp;
+});

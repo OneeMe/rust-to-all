@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"path": "rust"
+		},
+		{
+			"path": "ios"
+		},
+		{
+			"path": "android"
+		},
+		{
+			"path": "web"
+		},
+		{
+			"name": "react-native-js",
+			"path": "."
+		}
+	],
+	"settings": {
+		// 临时放在这里解决条件编译导致 vscode 没有提示的问题
+		"rust-analyzer.checkOnSave.extraArgs": [
+			"--target=x86_64-linux-android",
+		],
+		"files.associations": {
+			"*.in": "rust"
+		}
+	}
+}

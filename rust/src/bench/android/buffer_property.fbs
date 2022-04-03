@@ -1,0 +1,52 @@
+namespace flatbuffer_generate;
+
+enum BufferDisplay: int {
+    flex,
+    none,
+}
+
+
+enum BufferFlexDirection: int {
+    column,
+    column_reverse,
+    row,
+    row_reverse,
+}
+
+
+enum BufferFlexWrap: int {
+    nowrap,
+    wrap,
+}
+
+table BufferViewProperty {
+  width: double;
+  height: double;
+  margin_left: double;
+  margin_right: double;
+  margin_top: double;
+  margin_bottom: double;
+  flex: int;
+  display: BufferDisplay;
+  flex_direction: BufferFlexDirection;
+  background_color: int;
+  flex_wrap: BufferFlexWrap;
+  content: string;
+  a: string;
+  b: string;
+  c: string;
+  d: string;
+  e: string;
+  f: string;
+  g: string;
+  h: string;
+  i: string;
+  j: string;
+  k: string;
+  l: string;
+  m: string;
+  n: string;
+  o: string;
+}
+
+root_type BufferViewProperty;
