@@ -261,9 +261,9 @@ where
     F: Fn() -> (),
 {
     let mut count = 0;
-    let time_limit = Duration::from_secs(1);
+    let time_limit = Duration::from_millis(500);
     let mut total_time = Duration::ZERO;
-    while total_time.as_millis() < 1000 {
+    while total_time < time_limit {
         // while count < 30000 {
         let local_before = Instant::now();
         block();
@@ -272,9 +272,10 @@ where
         count += 1;
     }
     info!(
-        "[Bench-Rust-to-Java] {} count: {}, average duration: {} ns",
+        "[Bench-Rust-to-Java] {} count: {}, average duration: {} ns, total time is {:?}",
         name,
         count,
-        total_time.as_nanos() / &count
+        total_time.as_nanos() / &count,
+        total_time,
     );
 }
