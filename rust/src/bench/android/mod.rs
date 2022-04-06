@@ -264,17 +264,21 @@ where
     let mut count = 0;
     let mut vector = vec![];
     let time_limit = Duration::from_secs(1);
-    while before.elapsed() < time_limit {
+    let mut total_time = Duration::ZERO;
+    while total_time.as_millis() < 1000 {
+        // while count < 30000 {
         let local_before = Instant::now();
         block();
-        vector.push(local_before.elapsed().as_nanos());
+        let duration = local_before.elapsed();
+        total_time += duration;
+        vector.push(duration.as_nanos());
         count += 1;
     }
     info!(
-        "[Bench-Rust-to-Java] {} TPS: {}, average duration: {} ns",
+        "[Bench-Rust-to-Java] {} count: {}, average duration: {} ns",
         name,
         count,
-        1_000_000_000 / &count
+        total_time.as_nanos() / &count
     );
-    info!("[Bench-Rust-to-Java-Detail] {}: {:?}", name, vector);
+    // info!("[Bench-Rust-to-Java-Detail] {}: {:?}", name, vector);
 }
