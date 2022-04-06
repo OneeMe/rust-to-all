@@ -29,13 +29,13 @@ public class Bench implements FromRustToJavaBench {
         FromJavaToRustBench fromJavaToRustBench = new FromJavaToRustBench();
         fromJavaToRustBench.run_bench(bench);
 
-        this.benchCall(3000, "empty", new Runnable() {
+        this.benchCall( "empty", new Runnable() {
             @Override
             public void run() {
                 fromJavaToRustBench.call_empty();
             }
         });
-        this.benchCall(3000, "json-no-read", new Runnable() {
+        this.benchCall("json-no-read", new Runnable() {
             @Override
             public void run() {
                 com.onee.rusty.json.ViewProperty viewPropertyJson = getViewPropertyJson();
@@ -43,7 +43,7 @@ public class Bench implements FromRustToJavaBench {
                 fromJavaToRustBench.call_use_json(json, false);
             }
         });
-        this.benchCall(3000, "json", new Runnable() {
+        this.benchCall("json", new Runnable() {
             @Override
             public void run() {
                 com.onee.rusty.json.ViewProperty viewPropertyJson = getViewPropertyJson();
@@ -51,21 +51,21 @@ public class Bench implements FromRustToJavaBench {
                 fromJavaToRustBench.call_use_json(json, true);
             }
         });
-        this.benchCall(3000, "flapigen-no-read", new Runnable() {
+        this.benchCall("flapigen-no-read", new Runnable() {
             @Override
             public void run() {
                 ViewProperty viewPropertyFlapigen = getViewPropertyFlapigen();
                 fromJavaToRustBench.call_use_flapigen(viewPropertyFlapigen, false);
             }
         });
-        this.benchCall(3000, "flapigen", new Runnable() {
+        this.benchCall("flapigen", new Runnable() {
             @Override
             public void run() {
                 ViewProperty viewPropertyFlapigen = getViewPropertyFlapigen();
                 fromJavaToRustBench.call_use_flapigen(viewPropertyFlapigen, true);
             }
         });
-        this.benchCall(3000, "flatbuffer-no-read", new Runnable() {
+        this.benchCall("flatbuffer-no-read", new Runnable() {
             @Override
             public void run() {
                 FlatBufferBuilder builder = getFlatBufferBuilder();
@@ -73,7 +73,7 @@ public class Bench implements FromRustToJavaBench {
                 fromJavaToRustBench.call_use_flatbuffer(byteBuffer.compact().array(), false);
             }
         });
-        this.benchCall(3000, "flatbuffer", new Runnable() {
+        this.benchCall("flatbuffer", new Runnable() {
             @Override
             public void run() {
                 FlatBufferBuilder builder = getFlatBufferBuilder();
@@ -298,10 +298,13 @@ public class Bench implements FromRustToJavaBench {
         return viewPropertyFlapigen;
     }
 
-    private void benchCall(int count, String name, Runnable runnable) {
+    private void benchCall(String name, Runnable runnable) {
         long startTime = System.nanoTime();
-        runnable.run();
-        long endTime = System.nanoTime();
-        Log.d(TAG, "[Bench-Java-to-Rust] " + name + " total time:" + (endTime - startTime) / 100000 + "ms");
+        int count = 0;
+        while (System.nanoTime() - startTime < 1_000_000_000) {
+            runnable.run();
+            count++;
+        }
+        Log.d(TAG, "[Bench-Java-to-Rust] " + name + " TPS:" + count + ", average duration:" + 1_000_000_000 / count + "ns");
     }
 }

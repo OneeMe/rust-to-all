@@ -3,6 +3,7 @@ mod buffer_property_generated;
 use buffer_property_generated::flatbuffer_generate::*;
 
 use super::property::*;
+use std::time::Duration;
 use std::time::Instant;
 
 pub trait FromRustToJavaBench {
@@ -105,27 +106,27 @@ impl FromJavaToRustBench {
         builder.finish(buffer_view_property, None);
         let mut s = flexbuffers::FlexbufferSerializer::new();
         let view_property_clone = view_property.clone();
-        bench_call(3000, &"empty", || {
+        bench_call(&"empty", || {
             bench.call_empty();
         });
-        bench_call(3000, &"json-no-read", || {
+        bench_call(&"json-no-read", || {
             bench.call_use_json(serde_json::to_string(&view_property).unwrap(), false);
         });
-        bench_call(3000, &"json-read", || {
+        bench_call(&"json-read", || {
             bench.call_use_json(serde_json::to_string(&view_property).unwrap(), true);
         });
-        bench_call(3000, &"flexbuffers-no-read", || {
+        bench_call(&"flexbuffers-no-read", || {
             bench.call_use_flatbuffer(builder.finished_data().to_vec(), false);
         });
-        bench_call(3000, &"flexbuffers-read", || {
+        bench_call(&"flexbuffers-read", || {
             bench.call_use_flatbuffer(builder.finished_data().to_vec(), true);
         });
         let vp = &view_property;
-        bench_call(3000, "flapigen-no-read", || {
+        bench_call("flapigen-no-read", || {
             bench.call_use_flapigen(vp.to_owned(), false);
         });
         let vpc = &view_property_clone;
-        bench_call(3000, "flapigen-read", || {
+        bench_call("flapigen-read", || {
             bench.call_use_flapigen(vpc.to_owned(), true);
         });
     }
@@ -245,17 +246,21 @@ impl FromJavaToRustBench {
     }
 }
 
-pub fn bench_call<F>(count: i32, name: &str, block: F)
+pub fn bench_call<F>(name: &str, block: F)
 where
     F: Fn() -> (),
 {
     let before = Instant::now();
-    for _ in 0..count {
+    let mut count = 0;
+    let time_limit = Duration::from_secs(1);
+    while before.elapsed() < time_limit {
         block();
+        count += 1;
     }
     info!(
-        "[Bench-Rust-to-Java] {} Elapsed time: {:.2?}",
+        "[Bench-Rust-to-Java] {} TPS: {}, average duration: {} ns",
         name,
-        before.elapsed()
+        count,
+        1_000_000_000 / &count
     );
 }
