@@ -260,9 +260,7 @@ pub fn bench_call<F>(name: &str, block: F)
 where
     F: Fn() -> (),
 {
-    let before = Instant::now();
     let mut count = 0;
-    let mut vector = vec![];
     let time_limit = Duration::from_secs(1);
     let mut total_time = Duration::ZERO;
     while total_time.as_millis() < 1000 {
@@ -271,7 +269,6 @@ where
         block();
         let duration = local_before.elapsed();
         total_time += duration;
-        vector.push(duration.as_nanos());
         count += 1;
     }
     info!(
@@ -280,5 +277,4 @@ where
         count,
         total_time.as_nanos() / &count
     );
-    // info!("[Bench-Rust-to-Java-Detail] {}: {:?}", name, vector);
 }
