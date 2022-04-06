@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.alibaba.fastjson.JSON;
 import com.google.flatbuffers.FlatBufferBuilder;
+import com.google.gson.Gson;
 import com.onee.rusty.glue.Display;
 import com.onee.rusty.glue.FlexDirection;
 import com.onee.rusty.glue.FlexWrap;
@@ -14,6 +15,7 @@ import com.onee.rusty.glue.FromRustToJavaBench;
 import com.onee.rusty.glue.ViewProperty;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 public class Bench implements FromRustToJavaBench {
     private static String TAG = "FromRustToJavaBench";
@@ -125,7 +127,8 @@ public class Bench implements FromRustToJavaBench {
     @Override
     public void callUseJson(@NonNull String args, boolean read) {
         if (read) {
-            com.onee.rusty.json.ViewProperty viewProperty = JSON.parseObject(args, com.onee.rusty.json.ViewProperty.class);
+            Gson gson = new Gson();
+            com.onee.rusty.json.ViewProperty viewProperty = gson.fromJson(args, com.onee.rusty.json.ViewProperty.class);
             log("callUseJson-width: " + viewProperty.getWidth());
             log("callUseJson-height: " + viewProperty.getHeight());
             log("callUseJson-marginLeft: " + viewProperty.getMarginLeft());
@@ -162,33 +165,33 @@ public class Bench implements FromRustToJavaBench {
         if (read) {
             ByteBuffer buffer = ByteBuffer.wrap(args);
             com.onee.rusty.model.ViewProperty viewProperty = com.onee.rusty.model.ViewProperty.getRootAsViewProperty(buffer);
-            log("callUseFlexbuffer-width: " + viewProperty.width());
-            log("callUseFlexbuffer-height: " + viewProperty.height());
-            log("callUseFlexbuffer-marginLeft: " + viewProperty.marginLeft());
-            log("callUseFlexbuffer-marginRight: " + viewProperty.marginRight());
-            log("callUseFlexbuffer-marginTop: " + viewProperty.marginTop());
-            log("callUseFlexbuffer-marginBottom: " + viewProperty.marginBottom());
-            log("callUseFlexbuffer-flex: " + viewProperty.flex());
-            log("callUseFlexbuffer-display: " + viewProperty.display());
-            log("callUseFlexbuffer-flexDirection: " + viewProperty.flexDirection());
-            log("callUseFlexbuffer-backgroundColor: " + viewProperty.backgroundColor());
-            log("callUseFlexbuffer-flexWrap: " + viewProperty.flexWrap());
-            log("callUseFlexbuffer-content: " + viewProperty.content());
-            log("callUseFlexbuffer-a:" + viewProperty.a());
-            log("callUseFlexbuffer-b:" + viewProperty.b());
-            log("callUseFlexbuffer-c:" + viewProperty.c());
-            log("callUseFlexbuffer-d:" + viewProperty.d());
-            log("callUseFlexbuffer-e:" + viewProperty.e());
-            log("callUseFlexbuffer-f:" + viewProperty.f());
-            log("callUseFlexbuffer-g:" + viewProperty.g());
-            log("callUseFlexbuffer-h:" + viewProperty.h());
-            log("callUseFlexbuffer-i:" + viewProperty.i());
-            log("callUseFlexbuffer-j:" + viewProperty.j());
-            log("callUseFlexbuffer-k:" + viewProperty.k());
-            log("callUseFlexbuffer-l:" + viewProperty.l());
-            log("callUseFlexbuffer-m:" + viewProperty.m());
-            log("callUseFlexbuffer-n:" + viewProperty.n());
-            log("callUseFlexbuffer-o:" + viewProperty.o());
+            log("callUseFlatbuffers-width: " + viewProperty.width());
+            log("callUseFlatbuffers-height: " + viewProperty.height());
+            log("callUseFlatbuffers-marginLeft: " + viewProperty.marginLeft());
+            log("callUseFlatbuffers-marginRight: " + viewProperty.marginRight());
+            log("callUseFlatbuffers-marginTop: " + viewProperty.marginTop());
+            log("callUseFlatbuffers-marginBottom: " + viewProperty.marginBottom());
+            log("callUseFlatbuffers-flex: " + viewProperty.flex());
+            log("callUseFlatbuffers-display: " + viewProperty.display());
+            log("callUseFlatbuffers-flexDirection: " + viewProperty.flexDirection());
+            log("callUseFlatbuffers-backgroundColor: " + viewProperty.backgroundColor());
+            log("callUseFlatbuffers-flexWrap: " + viewProperty.flexWrap());
+            log("callUseFlatbuffers-content: " + viewProperty.content());
+            log("callUseFlatbuffers-a:" + viewProperty.a());
+            log("callUseFlatbuffers-b:" + viewProperty.b());
+            log("callUseFlatbuffers-c:" + viewProperty.c());
+            log("callUseFlatbuffers-d:" + viewProperty.d());
+            log("callUseFlatbuffers-e:" + viewProperty.e());
+            log("callUseFlatbuffers-f:" + viewProperty.f());
+            log("callUseFlatbuffers-g:" + viewProperty.g());
+            log("callUseFlatbuffers-h:" + viewProperty.h());
+            log("callUseFlatbuffers-i:" + viewProperty.i());
+            log("callUseFlatbuffers-j:" + viewProperty.j());
+            log("callUseFlatbuffers-k:" + viewProperty.k());
+            log("callUseFlatbuffers-l:" + viewProperty.l());
+            log("callUseFlatbuffers-m:" + viewProperty.m());
+            log("callUseFlatbuffers-n:" + viewProperty.n());
+            log("callUseFlatbuffers-o:" + viewProperty.o());
         }
     }
 
@@ -300,11 +303,16 @@ public class Bench implements FromRustToJavaBench {
 
     private void benchCall(String name, Runnable runnable) {
         long startTime = System.nanoTime();
+        ArrayList array = new ArrayList();
         int count = 0;
         while (System.nanoTime() - startTime < 1_000_000_000) {
+            long localStartTime = System.nanoTime();
             runnable.run();
+            long localEndtTime = System.nanoTime();
+            array.add(localEndtTime - localStartTime);
             count++;
         }
         Log.d(TAG, "[Bench-Java-to-Rust] " + name + " TPS:" + count + ", average duration:" + 1_000_000_000 / count + "ns");
+        Log.d(TAG, "[Bench-Java-to-Rust-Detail] " + name + ":" + array);
     }
 }
