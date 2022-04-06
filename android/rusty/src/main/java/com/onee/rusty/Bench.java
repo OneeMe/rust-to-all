@@ -1,5 +1,6 @@
 package com.onee.rusty;
 
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -15,7 +16,9 @@ import com.onee.rusty.glue.FromRustToJavaBench;
 import com.onee.rusty.glue.ViewProperty;
 
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class Bench implements FromRustToJavaBench {
     private static String TAG = "FromRustToJavaBench";
@@ -302,17 +305,24 @@ public class Bench implements FromRustToJavaBench {
     }
 
     private void benchCall(String name, Runnable runnable) {
-        long startTime = System.nanoTime();
-        ArrayList array = new ArrayList();
-        int count = 0;
-        while (System.nanoTime() - startTime < 1_000_000_000) {
-            long localStartTime = System.nanoTime();
-            runnable.run();
-            long localEndtTime = System.nanoTime();
-            array.add(localEndtTime - localStartTime);
-            count++;
+        long[] list = new long[] {
+            100_000_000,
+            500_000_000,
+            1_000_000_000,
+        };
+        for (long limit : list) {
+            long totalNanos = 0;
+            int count = 0;
+            while (totalNanos < limit) {
+                long localStartTime = System.nanoTime();
+                runnable.run();
+                long localEndtTime = System.nanoTime();
+                totalNanos += (localEndtTime - localStartTime);
+                count++;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Log.d(TAG, "[Bench-Java-to-Rust] " + name + ", " + count + ", " + (totalNanos / count) / 1000.0 + "µs," + totalNanos / 1_000_000 + "ms");
+            }
         }
-        Log.d(TAG, "[Bench-Java-to-Rust] " + name + " TPS:" + count + ", average duration:" + 1_000_000_000 / count + "ns");
-        Log.d(TAG, "[Bench-Java-to-Rust-Detail] " + name + ":" + array);
     }
 }
