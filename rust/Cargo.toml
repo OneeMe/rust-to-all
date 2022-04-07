@@ -27,4 +27,11 @@ android_logger = "0.11.0"
 wasm-bindgen = "0.2"
 
 [build-dependencies]
+# 用于生成符合 JNI 胶水层代码
 flapigen = "0.6.0-pre9"
+# 用于生成符合 ndk 标准的 so
+cargo-ndk = "2.7.0"
+# 用于生成 universal binary
+cargo-lipo = "3.2.0"
+# 用于自动生成头文件
+cbindgen = "0.21.0"
