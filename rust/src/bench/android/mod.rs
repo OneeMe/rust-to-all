@@ -25,30 +25,30 @@ impl FromJavaToRustBench {
         info!("{} is {}", name, content);
     }
     pub fn run_bench(&self, bench: Box<dyn FromRustToJavaBench>) {
-        bench_call(&"empty", || {
+        bench_call(2000000, &"empty", || {
             bench.call_empty();
         });
-        bench_call(&"json-no-read", || {
+        bench_call(200000, &"json-no-read", || {
             let view_property = create_view_property();
             bench.call_use_json(serde_json::to_string(&view_property).unwrap(), false);
         });
-        bench_call(&"json-read", || {
+        bench_call(10000, &"json-read", || {
             let view_property = create_view_property();
             bench.call_use_json(serde_json::to_string(&view_property).unwrap(), true);
         });
-        bench_call(&"flatbuffers-no-read", || {
+        bench_call(250000, &"flatbuffers-no-read", || {
             let builder = create_buffer_view_property();
             bench.call_use_flatbuffer(builder.finished_data().to_vec(), false);
         });
-        bench_call(&"flatbuffers-read", || {
+        bench_call(20000, &"flatbuffers-read", || {
             let builder = create_buffer_view_property();
             bench.call_use_flatbuffer(builder.finished_data().to_vec(), true);
         });
-        bench_call("flapigen-no-read", || {
+        bench_call(400000, "flapigen-no-read", || {
             let vp = create_view_property();
             bench.call_use_flapigen(vp, false);
         });
-        bench_call("flapigen-read", || {
+        bench_call(20000, "flapigen-read", || {
             let vp = create_view_property();
             bench.call_use_flapigen(vp, true);
         });
@@ -256,33 +256,21 @@ fn create_view_property() -> ViewProperty {
     view_property
 }
 
-pub fn bench_call<F>(name: &str, block: F)
+pub fn bench_call<F>(count: u32, name: &str, block: F)
 where
     F: Fn() -> (),
 {
-    vec![
-        Duration::from_millis(100),
-        Duration::from_millis(500),
-        Duration::from_millis(1000),
-    ]
-    .iter()
-    .for_each(|time_limit| {
-        let mut count = 0;
-        let mut total_time = Duration::ZERO;
-        let limit = time_limit.to_owned();
-        while total_time < limit {
-            let local_before = Instant::now();
-            block();
-            let duration = local_before.elapsed();
-            total_time += duration;
-            count += 1;
-        }
-        info!(
-            "[Bench-Rust-to-Java] {} ,{}, {}µs, {}ms",
-            name,
-            count,
-            (total_time / count).as_micros(),
-            total_time.as_millis(),
-        );
-    });
+    let local_before = Instant::now();
+    for _ in 0..count {
+        block();
+    }
+    let duration = local_before.elapsed();
+    info!(
+        "[Bench-Rust-to-Java] {} , call count: {}, average call duration: {:.2}µs, total duration: {}ms, TPS: {:.1}",
+        name,
+        count,
+        duration.as_micros() as f32 / count as f32,
+        duration.as_millis(),
+        count as f32 / duration.as_secs_f32(),
+    );
 }
