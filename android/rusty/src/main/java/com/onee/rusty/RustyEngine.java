@@ -39,6 +39,10 @@ public class RustyEngine {
     private ReactApplicationContext reactContext;
     private Engine engine;
 
+    static {
+        System.loadLibrary("rustlib");
+    }
+
     public RustyEngine(Context context) {
         reactContext = new ReactApplicationContext(context.getApplicationContext());
         ReactQueueConfigurationSpec spec =
@@ -62,12 +66,11 @@ public class RustyEngine {
         viewManagers.add(new ReactTextViewManager());
         viewManagers.add(new ReactRawTextManager());
         uiManager = new RustHostUIManager(reactContext, viewManagers, 0);
+        engine = new Engine(uiManager);
+        engine.launch();
     }
 
     public void run(ReactRootView rootView) {
-        System.loadLibrary("rustlib");
-        engine = new Engine(uiManager);
-        engine.launch();
         int rootTag = uiManager.addRootView(rootView);
         Log.d(TAG, "root tag is " + rootTag);
         reactContext.runOnNativeModulesQueueThread(new Runnable() {

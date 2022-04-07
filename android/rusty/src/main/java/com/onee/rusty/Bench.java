@@ -1,5 +1,9 @@
 package com.onee.rusty;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
 
@@ -22,6 +26,11 @@ import java.util.function.Consumer;
 
 public class Bench implements FromRustToJavaBench {
     private static String TAG = "FromRustToJavaBench";
+    private Context context;
+
+    public Bench(Context context) {
+        this.context = context;
+    }
 
     private void log(String content) {
         if (BuildConfig.DEBUG) {
@@ -29,63 +38,94 @@ public class Bench implements FromRustToJavaBench {
         }
     }
 
-    public void run() {
-        Bench bench = new Bench();
-        FromJavaToRustBench fromJavaToRustBench = new FromJavaToRustBench();
-        fromJavaToRustBench.run_bench(bench);
+    private int getBenchIndex() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("rust-bench", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        this.benchCall( "empty", new Runnable() {
-            @Override
-            public void run() {
-                fromJavaToRustBench.call_empty();
-            }
-        });
-        this.benchCall("json-no-read", new Runnable() {
-            @Override
-            public void run() {
-                com.onee.rusty.json.ViewProperty viewPropertyJson = getViewPropertyJson();
-                String json = JSON.toJSONString(viewPropertyJson);
-                fromJavaToRustBench.call_use_json(json, false);
-            }
-        });
-        this.benchCall("json", new Runnable() {
-            @Override
-            public void run() {
-                com.onee.rusty.json.ViewProperty viewPropertyJson = getViewPropertyJson();
-                String json = JSON.toJSONString(viewPropertyJson);
-                fromJavaToRustBench.call_use_json(json, true);
-            }
-        });
-        this.benchCall("flapigen-no-read", new Runnable() {
-            @Override
-            public void run() {
-                ViewProperty viewPropertyFlapigen = getViewPropertyFlapigen();
-                fromJavaToRustBench.call_use_flapigen(viewPropertyFlapigen, false);
-            }
-        });
-        this.benchCall("flapigen", new Runnable() {
-            @Override
-            public void run() {
-                ViewProperty viewPropertyFlapigen = getViewPropertyFlapigen();
-                fromJavaToRustBench.call_use_flapigen(viewPropertyFlapigen, true);
-            }
-        });
-        this.benchCall("flatbuffer-no-read", new Runnable() {
-            @Override
-            public void run() {
-                FlatBufferBuilder builder = getFlatBufferBuilder();
-                ByteBuffer byteBuffer = builder.dataBuffer();
-                fromJavaToRustBench.call_use_flatbuffer(byteBuffer.compact().array(), false);
-            }
-        });
-        this.benchCall("flatbuffer", new Runnable() {
-            @Override
-            public void run() {
-                FlatBufferBuilder builder = getFlatBufferBuilder();
-                ByteBuffer byteBuffer = builder.dataBuffer();
-                fromJavaToRustBench.call_use_flatbuffer(byteBuffer.compact().array(), true);
-            }
-        });
+        int value = sharedPreferences.getInt("index", -1);
+        value += 1;
+        if (value >= 14) {
+            value = 0;
+        }
+        editor.putInt("index", value);
+        editor.commit();
+        return value;
+    }
+
+    public void run() {
+        FromJavaToRustBench fromJavaToRustBench = new FromJavaToRustBench();
+        int value = getBenchIndex();
+        fromJavaToRustBench.run_bench(value, this);
+        switch (value) {
+            case 7:
+                this.benchCall(17000000, "empty", new Runnable() {
+                    @Override
+                    public void run() {
+                        fromJavaToRustBench.call_empty();
+                    }
+                });
+                break;
+            case 8:
+                this.benchCall(135000,"flatbuffer-no-read", new Runnable() {
+                    @Override
+                    public void run() {
+                        FlatBufferBuilder builder = getFlatBufferBuilder();
+                        ByteBuffer byteBuffer = builder.dataBuffer();
+                        fromJavaToRustBench.call_use_flatbuffer(byteBuffer.compact().array(), false);
+                    }
+                });
+                break;
+            case 9:
+                this.benchCall(100000,"flatbuffer", new Runnable() {
+                    @Override
+                    public void run() {
+                        FlatBufferBuilder builder = getFlatBufferBuilder();
+                        ByteBuffer byteBuffer = builder.dataBuffer();
+                        fromJavaToRustBench.call_use_flatbuffer(byteBuffer.compact().array(), true);
+                    }
+                });
+            break;
+            case 10:
+                this.benchCall(50000,"json-no-read", new Runnable() {
+                    @Override
+                    public void run() {
+                        com.onee.rusty.json.ViewProperty viewPropertyJson = getViewPropertyJson();
+                        String json = JSON.toJSONString(viewPropertyJson);
+                        fromJavaToRustBench.call_use_json(json, false);
+                    }
+                });
+                break;
+            case 11:
+                this.benchCall(40000,"json", new Runnable() {
+                    @Override
+                    public void run() {
+                        com.onee.rusty.json.ViewProperty viewPropertyJson = getViewPropertyJson();
+                        String json = JSON.toJSONString(viewPropertyJson);
+                        fromJavaToRustBench.call_use_json(json, true);
+                    }
+                });
+                break;
+            case 12:
+                this.benchCall(160000,"flapigen-no-read", new Runnable() {
+                    @Override
+                    public void run() {
+                        ViewProperty viewPropertyFlapigen = getViewPropertyFlapigen();
+                        fromJavaToRustBench.call_use_flapigen(viewPropertyFlapigen, false);
+                    }
+                });
+                break;
+            case 13:
+                this.benchCall(130000,"flapigen", new Runnable() {
+                    @Override
+                    public void run() {
+                        ViewProperty viewPropertyFlapigen = getViewPropertyFlapigen();
+                        fromJavaToRustBench.call_use_flapigen(viewPropertyFlapigen, true);
+                    }
+                });
+                break;
+            default:
+                Log.d(TAG, "not run in index:" + value);
+        }
     }
 
     @Override
@@ -198,7 +238,6 @@ public class Bench implements FromRustToJavaBench {
         }
     }
 
-
     @NonNull
     private FlatBufferBuilder getFlatBufferBuilder() {
         FlatBufferBuilder builder = new FlatBufferBuilder(0);
@@ -304,25 +343,13 @@ public class Bench implements FromRustToJavaBench {
         return viewPropertyFlapigen;
     }
 
-    private void benchCall(String name, Runnable runnable) {
-        long[] list = new long[] {
-            100_000_000,
-            500_000_000,
-            1_000_000_000,
-        };
-        for (long limit : list) {
-            long totalNanos = 0;
-            int count = 0;
-            while (totalNanos < limit) {
-                long localStartTime = System.nanoTime();
-                runnable.run();
-                long localEndtTime = System.nanoTime();
-                totalNanos += (localEndtTime - localStartTime);
-                count++;
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                Log.d(TAG, "[Bench-Java-to-Rust] " + name + ", " + count + ", " + (totalNanos / count) / 1000.0 + "µs," + totalNanos / 1_000_000 + "ms");
-            }
+    private void benchCall(int count, String name, Runnable runnable) {
+        long localStartTime = System.nanoTime();
+        for (int i = 0; i < count; i++) {
+            runnable.run();
         }
+        long localEndtTime = System.nanoTime();
+        long totalNanos = (localEndtTime - localStartTime);
+        Log.d(TAG, "[Bench-Java-to-Rust] " + name + ", call count is: " + count + ", average call duration: " + (totalNanos / count) / 1000.0 + "µs, total duration: " + totalNanos / 1_000_000 + "ms, TPS: " + (count / (totalNanos / 1_000_000_000.0)));
     }
 }

@@ -3,7 +3,6 @@ mod buffer_property_generated;
 use buffer_property_generated::flatbuffer_generate::*;
 
 use super::property::*;
-use std::time::Duration;
 use std::time::Instant;
 
 pub trait FromRustToJavaBench {
@@ -24,34 +23,37 @@ impl FromJavaToRustBench {
         #[cfg(debug_assertions)]
         info!("{} is {}", name, content);
     }
-    pub fn run_bench(&self, bench: Box<dyn FromRustToJavaBench>) {
-        bench_call(2000000, &"empty", || {
-            bench.call_empty();
-        });
-        bench_call(200000, &"json-no-read", || {
-            let view_property = create_view_property();
-            bench.call_use_json(serde_json::to_string(&view_property).unwrap(), false);
-        });
-        bench_call(10000, &"json-read", || {
-            let view_property = create_view_property();
-            bench.call_use_json(serde_json::to_string(&view_property).unwrap(), true);
-        });
-        bench_call(250000, &"flatbuffers-no-read", || {
-            let builder = create_buffer_view_property();
-            bench.call_use_flatbuffer(builder.finished_data().to_vec(), false);
-        });
-        bench_call(20000, &"flatbuffers-read", || {
-            let builder = create_buffer_view_property();
-            bench.call_use_flatbuffer(builder.finished_data().to_vec(), true);
-        });
-        bench_call(400000, "flapigen-no-read", || {
-            let vp = create_view_property();
-            bench.call_use_flapigen(vp, false);
-        });
-        bench_call(20000, "flapigen-read", || {
-            let vp = create_view_property();
-            bench.call_use_flapigen(vp, true);
-        });
+    pub fn run_bench(&self, index: i32, bench: Box<dyn FromRustToJavaBench>) {
+        match index {
+            0 => bench_call(2500000, &"empty", || {
+                bench.call_empty();
+            }),
+            1 => bench_call(250000, &"json-no-read", || {
+                let view_property = create_view_property();
+                bench.call_use_json(serde_json::to_string(&view_property).unwrap(), false);
+            }),
+            2 => bench_call(8000, &"json-read", || {
+                let view_property = create_view_property();
+                bench.call_use_json(serde_json::to_string(&view_property).unwrap(), true);
+            }),
+            3 => bench_call(350000, "flapigen-no-read", || {
+                let vp = create_view_property();
+                bench.call_use_flapigen(vp, false);
+            }),
+            4 => bench_call(30000, "flapigen-read", || {
+                let vp = create_view_property();
+                bench.call_use_flapigen(vp, true);
+            }),
+            5 => bench_call(450000, &"flatbuffers-no-read", || {
+                let builder = create_buffer_view_property();
+                bench.call_use_flatbuffer(builder.finished_data().to_vec(), false);
+            }),
+            6 => bench_call(35000, &"flatbuffers-read", || {
+                let builder = create_buffer_view_property();
+                bench.call_use_flatbuffer(builder.finished_data().to_vec(), true);
+            }),
+            _ => info!("not run"),
+        }
     }
     pub fn call_empty(&self) {}
     pub fn call_use_flapigen(&self, args: ViewProperty, read: bool) {

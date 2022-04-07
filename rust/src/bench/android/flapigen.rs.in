@@ -177,7 +177,7 @@ foreign_callback!(callback FromRustToJavaBench {
 foreign_class!(class FromJavaToRustBench {
   self_type FromJavaToRustBench;
   constructor FromJavaToRustBench::new() -> FromJavaToRustBench;
-  fn FromJavaToRustBench::run_bench(&self, bench: Box<dyn FromRustToJavaBench>) -> ();
+  fn FromJavaToRustBench::run_bench(&self, index: i32, bench: Box<dyn FromRustToJavaBench>) -> ();
   fn FromJavaToRustBench::call_empty(&self);
   fn FromJavaToRustBench::call_use_flapigen(&self, args: ViewProperty, read: bool);
   fn FromJavaToRustBench::call_use_json(&self, args: String, read: bool);

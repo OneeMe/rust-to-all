@@ -47,18 +47,6 @@ public class RustHostActivity extends AppCompatActivity implements DefaultHardwa
         setContentView(R.layout.rust_host);
 
         run(false);
-        bench();
-    }
-
-    private void bench() {
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Bench bench = new Bench();
-                bench.run();;
-            }
-        }, 1000);
     }
 
     private void run(boolean isNative) {
